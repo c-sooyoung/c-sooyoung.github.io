@@ -1,4 +1,4 @@
-# Sooyoung Cheong (Kiwi)
+# Sooyoung Cheong (kiwi)
 
 ## About me
 I am a student studying physics and linguistics at SNU.  
