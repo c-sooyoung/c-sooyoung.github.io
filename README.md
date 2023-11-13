@@ -1,5 +1,3 @@
-# Sooyoung Cheong (kiwi)
-
 ## About me
 I am a student studying physics and linguistics at SNU.  
-Other [interests](#) include programming, typography, photography and much more!
+Other [interests](./kiwi-wiki) include programming, typography, photography and much more!
