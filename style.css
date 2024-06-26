@@ -2,17 +2,32 @@
     font-family: 'Cascadia code';
     src: 
         local("Cascadia code"),
-        url('https://fonts.cdnfonts.com/css/cascadia-code');
-    /* font-feature-settings: "ss01"; */
+        url("./assets/fonts/CascadiaCode.woff2") format("woff2");
+    font-feature-settings: "ss01";
+}
+
+@font-face {
+    font-family: 'Cascadia code';
+    src:
+        local("Cascadia code Italic"),
+        url("./assets/fonts/CascadiaCodeItalic.woff2") format("woff2");
+    font-feature-settings: "ss01";
+    font-style: italic;
 }
 
 body {
     padding: 5em;
     font-family: 'Cascadia code', monospace;
     font-feature-settings: "ss01";
+
+    color: black;
 }
 
-footer {
-    position: absolute;
-    bottom: 5em;
+a {
+    color: slateblue;
+    text-decoration: none;
+}
+
+a:hover {
+    color: darkslateblue;
 }
