@@ -1,15 +1,12 @@
 @font-face {
     font-family: 'Cascadia code';
     src: 
-        local("Cascadia code"),
         url("./assets/fonts/CascadiaCode.woff2") format("woff2");
-    font-feature-settings: "ss01";
 }
 
 @font-face {
     font-family: 'Cascadia code';
     src:
-        local("Cascadia code Italic"),
         url("./assets/fonts/CascadiaCodeItalic.woff2") format("woff2");
     font-feature-settings: "ss01";
     font-style: italic;
@@ -26,6 +23,7 @@ body {
 a {
     color: slateblue;
     text-decoration: none;
+    font-style: italic;
 }
 
 a:hover {
