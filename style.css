@@ -28,3 +28,12 @@ a {
 a:hover {
     color: darkslateblue;
 }
+
+footer {
+    padding-top: 2em;
+}
+
+footer .icon {
+    font-size: 2em;
+    margin: 0 1ch 0 0;
+}
