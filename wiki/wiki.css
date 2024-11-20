@@ -1,31 +1,16 @@
 @font-face {
-    font-family: 'Cascadia Mono NF';
+    font-family: 'Cascadia code';
     src: 
-        url("./fonts/Cascadia Code/CascadiaMonoNF.ttf") format("ttf");
+        url("./fonts/CascadiaCode.woff2") format("woff2");
 }
 
 @font-face {
-    font-family: 'Cascadia Mono NF';
+    font-family: 'Cascadia code';
     src:
-        url("./fonts/Cascadia Code/CascadiaMonoNFItalic.ttf") format("ttf");
+        url("./fonts/CascadiaCodeItalic.woff2") format("woff2");
     font-feature-settings: "ss01";
     font-style: italic;
 }
-
-@font-face {
-    font-family: 'CMU Serif';
-    src: 
-        url("./fonts/CMU/cmunrm.ttf") format("ttf");
-}
-
-@font-face {
-    font-family: 'CMU Serif';
-    src: 
-        url("./fonts/CMU/cmunti.ttf") format("ttf");
-    font-style: italic;
-}
-
-
 
 html {
   font-size: 100%;
@@ -35,13 +20,21 @@ html {
 }
 
 body {
-/*  font-family: 'Cascadia Code', sans-serif;*/
-  font-family: 'CMU Serif', serif;
+/*  color: #444;*/
+  font-family: 'Cascadia Code', sans-serif;
+/*  font-family: 'CMU Bright', sans-serif;*/
   font-size: 12pt;
   line-height: 1.8;
-  padding: 4em;
+  padding: 2em;
   margin: auto;
   max-width: 100ch;
+/*  background: #fefefe;*/
+
+  font-weight: lighter;
+/*  font-feature-settings: 'ss01';*/
+
+/*  font-variation-settings: 'wght' 100;*/
+
 }
 
 body {
@@ -98,6 +91,20 @@ a:hover {
   color: navy;
 }
 
+:target::before {
+  content: ">>>";
+  position: absolute;
+  transform: translate(calc(-100% - 1ch), 0);
+/*  font-weight: lighter;*/
+/*  animation: hide 3s linear;*/
+/*  opacity: 0;*/
+}
+
+/*@keyframes hide {
+  from {opacity: 100%;}
+  to {opacity: 0;}
+}*/
+
 .sourceCode {
   background: #eee;
 }
@@ -111,11 +118,6 @@ code {
   font-family: 'CMU typewriter text', 'Cascadia Mono NF', monospace;
 /*  font-variation-settings: 'wght' 350;*/
 /*  font-weight: 350;*/
-}
-
-mjx-container[jax="CHTML"][display="true"] {
-/*  max-width: 80%;*/
-  overflow-x: scroll;
 }
 
 .citation {
@@ -145,12 +147,6 @@ mjx-container[jax="CHTML"][display="true"] {
   margin-top: 1em;
   display: flex;
   opacity: 50%;
-}
-
-.csl-entry:target::before {
-  content: ">>>";
-  position: absolute;
-  transform: translate(calc(-100% - 1ch), 0);
 }
 
 .csl-entry:target {
