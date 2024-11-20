@@ -1,0 +1,149 @@
+html {
+  font-size: 100%;
+  overflow-y: scroll;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+/*  color: #444;*/
+  font-family: 'Cascadia Code', sans-serif;
+/*  font-family: 'CMU Bright', sans-serif;*/
+  font-size: 12pt;
+  line-height: 1.8;
+  padding: 2em;
+  margin: auto;
+  max-width: 100ch;
+/*  background: #fefefe;*/
+
+  font-weight: lighter;
+/*  font-feature-settings: 'ss01';*/
+
+/*  font-variation-settings: 'wght' 100;*/
+
+}
+
+body {
+  --citation-color: red;
+  --citation-hover-color: darkred;
+  --link-color: royalblue;
+}
+
+h1, h2 {
+  margin-block-start: 1.5em;
+  margin-block-end: 0;
+}
+
+h1.title {
+  text-transform: capitalize;
+}
+
+h1, h2, h3, h4, h5, h6 {
+/*  margin-block-start: 1.5em;*/
+  margin-block-end: 0;
+}
+
+.header-link {
+  font-family: 'Cascadia Mono NF', monospace;
+}
+
+:is(h3,h4,h5,h6) + :is(p,pre,table,ul,ol) {
+    margin-top: 0;
+}
+
+blockquote {
+  font-style: italic;
+/*  font-size: 0.8em;*/
+  color: goldenrod;
+  border-left: 0.25ch solid goldenrod;
+  margin-left: 0;
+  padding-left: 1.75ch;
+}
+
+blockquote .citation {
+  font-style: normal;
+}
+
+figure {
+  margin: 0;
+}
+
+a, a:visited, a:active  {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: navy;
+}
+
+:target::before {
+  content: ">>>";
+  position: absolute;
+  transform: translate(calc(-100% - 1ch), 0);
+/*  font-weight: lighter;*/
+/*  animation: hide 3s linear;*/
+/*  opacity: 0;*/
+}
+
+/*@keyframes hide {
+  from {opacity: 100%;}
+  to {opacity: 0;}
+}*/
+
+.sourceCode {
+  background: #eee;
+}
+
+pre {
+  padding: 2ch;
+  font-size: 0.8em;
+}
+
+code {
+  font-family: 'CMU typewriter text', 'Cascadia Mono NF', monospace;
+/*  font-variation-settings: 'wght' 350;*/
+/*  font-weight: 350;*/
+}
+
+.citation {
+  color: var(--citation-color);
+/*  font-weight: bold;*/
+/*  font-size: 0.75em;*/
+}
+
+.citation:hover {
+  color: var(--citation-hover-color);
+}
+
+.citation a {
+  color: inherit;
+}
+
+.citation a:hover {
+  color: inherit;
+}
+
+.references {
+  font-size: 0.8em;
+  margin-block-start: 5em;
+}
+
+.csl-entry {
+  margin-top: 1em;
+  display: flex;
+  opacity: 50%;
+}
+
+.csl-entry:target {
+  opacity: 100%;
+  font-weight: normal;
+}
+
+.csl-right-inline {
+  padding: 0;
+  margin-left: 1ch;
+}
+
+
+
