@@ -5,7 +5,7 @@
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <title>ptychography</title>
-  <style>
+<!--   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -40,7 +40,7 @@
     }
     div.csl-indent {
       margin-left: 2em;
-    }  </style>
+    }  </style> -->
   <link rel="stylesheet" href="wiki.css" />
   <script
   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
@@ -79,9 +79,7 @@ algorithms</a> they employ and the methods they use to achieve stronger
 title="§Relaxing assumptions">experimental robustness</a>. However, they
 all share the common notion of overlapping illuminations by known probe
 positions.</p>
-<h2 id="experimental-setup">Experimental setup <a
-href="#experimental-setup" class="header-link"
-title="§ experimental setup"></a></h2>
+<h2 id="experimental-setup">Experimental setup</h2>
 <blockquote>
 <figure>
 <img src="assets/ptychography/20241120_093515.png" width="300"
@@ -131,9 +129,7 @@ faster convergence <span class="citation"
 data-cites="rodenburgPtychography2019">(<a
 href="#ref-rodenburgPtychography2019"
 role="doc-biblioref">1</a>)</span>.</p>
-<h2 id="basic-mathematical-model">Basic mathematical model <a
-href="#basic-mathematical-model" class="header-link"
-title="§ basic mathematical model"></a></h2>
+<h2 id="basic-mathematical-model">Basic mathematical model</h2>
 <blockquote>
 <h4 id="notation">Notation</h4>
 <ul>
@@ -191,9 +187,7 @@ I_j(\mathbf{k}) = |\tilde{\psi}_j(\mathbf{k})|^2 = | \mathcal{F}
 <p>These two equations roughly represent the constraints that let us
 solve the phase problem; each in the real domain and reciprocal domain
 respectively.</p>
-<h2 id="reconstruction-algorithms">Reconstruction algorithms <a
-href="#reconstruction-algorithms" class="header-link"
-title="§ reconstruction algorithms"></a></h2>
+<h2 id="reconstruction-algorithms">Reconstruction algorithms</h2>
 <p>Modelling the forward propagation is simple; however, going backwards
 is tricky. This is an inverse problem, where one wants to recover the
 object function <span class="math inline">\(\hat O\)</span> constrained
@@ -210,8 +204,7 @@ and survey of ptychography algorithms given by Rodenburg and Maiden in
 href="#ref-rodenburgPtychography2019"
 role="doc-biblioref">1</a>)</span>. Detailed explanation with code
 examples can (hopefully) be found by following the links.</p>
-<h3 id="inverse-solvers">Inverse solvers <a href="#inverse-solvers"
-class="header-link" title="§ inverse solvers"></a></h3>
+<h3 id="inverse-solvers">Inverse solvers</h3>
 <p>The first type (called Class 1 by Rodenburg and Maiden) of algorithms
 are those that directly solve for the phases. Originally, ptychography
 was coined in 1970 by Hergel and Hoppe <span class="citation"
@@ -257,9 +250,7 @@ significantly. PIE was improved to solve for the probe as well <span
 class="citation" data-cites="maidenImprovedPtychographicalPhase2009">(<a
 href="#ref-maidenImprovedPtychographicalPhase2009"
 role="doc-biblioref">17</a>)</span>.</p>
-<h3 id="relaxing-assumptions">Relaxing assumptions <a
-href="#relaxing-assumptions" class="header-link"
-title="§ relaxing assumptions"></a></h3>
+<h3 id="relaxing-assumptions">Relaxing assumptions</h3>
 <p>Robustness against experimental noise, which weakens the fundamental
 assumptions of ptychography is also as important (if not more) as the
 inversion algorithms. The following algorithms (Class 2) are those that

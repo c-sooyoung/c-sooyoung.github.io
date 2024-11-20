@@ -1,3 +1,17 @@
+@font-face {
+    font-family: 'Cascadia code';
+    src: 
+        url("./fonts/CascadiaCode.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: 'Cascadia code';
+    src:
+        url("./fonts/CascadiaCodeItalic.woff2") format("woff2");
+    font-feature-settings: "ss01";
+    font-style: italic;
+}
+
 html {
   font-size: 100%;
   overflow-y: scroll;
