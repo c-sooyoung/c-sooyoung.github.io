@@ -1,133 +1,291 @@
-@font-face {
-    font-family: 'Cascadia code';
-    src: 
-        url("./fonts/CascadiaCode.woff2") format("woff2");
-}
-
-@font-face {
-    font-family: 'Cascadia code';
-    src:
-        url("./fonts/CascadiaCodeItalic.woff2") format("woff2");
-    font-feature-settings: "ss01";
-    font-style: italic;
-}
-
-html {
-  font-size: 100%;
-  overflow-y: scroll;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-}
+/* ============================================================================================= */
+/* variables                                                                                     */
+/*                                                                                               */
+/* rule order:                                                                                   */
+/*     - display                                                                                 */
+/*     - spacing                                                                                 */
+/*     - typography                                                                              */
+/*     - color                                                                                   */
+/*     - decoration                                                                              */
+/* ============================================================================================= */
 
 body {
-/*  color: #444;*/
-  font-family: 'Cascadia Code', sans-serif;
-/*  font-family: 'CMU Bright', sans-serif;*/
-  font-size: 12pt;
-  line-height: 1.8;
-  padding: 2em;
-  margin: auto;
-  max-width: 100ch;
-/*  background: #fefefe;*/
 
-  font-weight: lighter;
-/*  font-feature-settings: 'ss01';*/
+  /* spacing */
+  --header-width: 44ch;
+  --main-width: 100ch;
 
-/*  font-variation-settings: 'wght' 100;*/
+  /* typogarphy */
+  --font-serif: 'cmu serif', 'noto serif cjk kr', serif;
+  --font-sans: 'mona sans', 'noto sans cjk kr', sans-serif;
+  --font-mono: 'cascadia code', 'd2coding', monospace;
+  --font: var(--font-sans);
+
+  --font-thin: 100;
+  --font-extralight: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-heavy: 900;
+
+  --line-height: 1.8;
+  --line-height-condensed: 1.3;
+
+  /* colors */
+  --color-text: #444;
+
+  --color-red: #e84e75;
+  --color-red-dark: #c33c5e;
+  --color-red-darker: #a32c4d;
+  --color-yellow: #ffd100;
+  --color-yellow-dark: #e6b800;
+  --color-yellow-darker: #cc9c00;
+  --color-mint: #65bba8;
+  --color-mint-dark: #5f9d8b;
+  --color-mint-darker: #5a8f7e;
+  --color-green: #85bb65;
+  --color-green-dark: #6f9d5f;
+  --color-green-darker: #5f8f5a;
+  --color-blue: #636ebb;
+  --color-blue-dark: #5a5f8f;
+  --color-blue-darker: #3b3b6a;
+
+  --color-code-background: #f8f8f8;
+  --color-code-border: #ddd;
+
+
+  /* decoration */
 
 }
+
+/* ============================================================================================= */
+/* some basics                                                                                   */
+/* ============================================================================================= */
 
 body {
-  --citation-color: red;
-  --citation-hover-color: darkred;
-  --link-color: royalblue;
+  padding: 0;
+  margin: 0;
+
+  font-family: var(--font-serif);
+  font-size: 1em;
+  line-height: var(--line-height);
+
+  color: var(--color-text);
 }
+
+:target {
+  scroll-margin-top: 5rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* ============================================================================================= */
+/* template elements */
+/* ============================================================================================= */
+
+.body-flexbox {
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  position: sticky;
+  top: 0;
+
+  height: 100vh;
+  width: var(--header-width);
+
+  font-family: var(--font-serif);
+
+  color: var(--color-text)
+}
+
+.article-description, .kiwi-wiki-description {
+  margin: 2em;
+}
+
+.article-description h1 {
+  margin: 0;
+
+  font-size: 2em;
+  overflow-wrap: break-word;
+}
+
+nav {
+  font-size: 1em
+}
+
+nav ul {
+  padding-left: 0;
+
+  list-style-type: none;
+}
+
+nav li {
+  line-height: 2;
+}
+
+nav ul > li > ul {
+  padding-left: 4ch;
+}
+
+nav a, nav a:visited, nav a:active {
+  color: var(--color-blue);
+}
+
+nav a:hover {
+  color: var(--color-blue-darker);
+}
+
+.kiwi-wiki-description {
+  font-size: 0.75em;
+}
+
+.site-links {
+  display: flex;
+  gap: 2ch;
+}
+
+.site-links a, .site-links a:visited, .site-links a:active {
+  color: var(--color-red);
+}
+
+.site-links a:hover {
+  color: var(--color-red-darker);
+}
+
+main {
+  margin: 1em 4ch 100vh 2ch;
+  max-width: var(--main-width);
+}
+
+/* ============================================================================================= */
+/* contents                                                                                      */
+/* ============================================================================================= */
+
+/* headings ==================================================================================== */
 
 h1, h2 {
   margin-block-start: 1.5em;
   margin-block-end: 0;
 }
 
-h1.title {
-  text-transform: capitalize;
-}
-
 h1, h2, h3, h4, h5, h6 {
-/*  margin-block-start: 1.5em;*/
-  margin-block-end: 0;
-}
-
-.header-link {
-  font-family: 'Cascadia Mono NF', monospace;
+    margin-block-end: 0;
 }
 
 :is(h3,h4,h5,h6) + :is(p,pre,table,ul,ol) {
-    margin-top: 0;
+  margin-top: 0;
 }
 
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+h3 { font-size: 1.25em; }
+h4, h5, h6 { font-size: 1em; }
+
+/* links ======================================================================================= */
+
+a, a:visited, a:active  {
+  color: var(--color-green-darker);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-green);
+}
+
+/* blockquotes ================================================================================= */
+
 blockquote {
-  font-style: italic;
-/*  font-size: 0.8em;*/
-  color: goldenrod;
-  border-left: 0.25ch solid goldenrod;
   margin-left: 0;
-  padding-left: 1.75ch;
+  padding-left: 2.75ch;
+
+  font-style: italic;
+
+  color: var(--color-green-dark);
+
+  border-left: 0.25ch solid var(--color-green-dark);
+}
+
+blockquote :is(h1,h2,h3,h4,h5,h6) {
+  font-style: normal;
 }
 
 blockquote .citation {
   font-style: normal;
 }
 
+/* images ====================================================================================== */
+
 figure {
   margin: 0;
 }
 
-a, a:visited, a:active  {
-  color: var(--link-color);
-  text-decoration: none;
-}
+/* lists ======================================================================================= */
 
-a:hover {
-  color: navy;
-}
 
-:target::before {
-  content: ">>>";
-  position: absolute;
-  transform: translate(calc(-100% - 1ch), 0);
-/*  font-weight: lighter;*/
-/*  animation: hide 3s linear;*/
-/*  opacity: 0;*/
-}
+/* code ======================================================================================== */
 
-/*@keyframes hide {
-  from {opacity: 100%;}
-  to {opacity: 0;}
-}*/
+code {
+  padding: 0.1em 0.25em;
+
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+
+  background-color: var(--color-code-background);
+  border: 1pt solid var(--color-code-border);
+  border-radius: 3pt;
+}
 
 .sourceCode {
-  background: #eee;
+  border-radius: 5pt;
 }
 
 pre {
-  padding: 2ch;
-  font-size: 0.8em;
+  padding: 1em;
+
+  line-height: 1.5;
+
+  border-radius: 25px;
 }
 
-code {
-  font-family: 'CMU typewriter text', 'Cascadia Mono NF', monospace;
-/*  font-variation-settings: 'wght' 350;*/
-/*  font-weight: 350;*/
+pre code {
+  padding: 0;
+
+  font-size: 0.9em;
+
+  border: none;
+  background-color: transparent;
 }
+
+/* math ======================================================================================== */
+
+mjx-container {
+  overflow-x: scroll;
+}
+
+/* footnotes =================================================================================== */
+
+
+
+/* citations =================================================================================== */
 
 .citation {
-  color: var(--citation-color);
-/*  font-weight: bold;*/
-/*  font-size: 0.75em;*/
+  color: var(--color-mint);
 }
 
 .citation:hover {
-  color: var(--citation-hover-color);
+  color: var(--color-mint-darker);
 }
 
 .citation a {
@@ -138,15 +296,27 @@ code {
   color: inherit;
 }
 
+/* references ================================================================================== */
+
 .references {
   font-size: 0.8em;
   margin-block-start: 5em;
+
+  color: #000;
+}
+
+.references a, .references a:visited, .references a:active {
+  color: var(--color-mint);
+}
+
+.references a:hover {
+  color: var(--color-mint-darker);
 }
 
 .csl-entry {
   margin-top: 1em;
   display: flex;
-  opacity: 50%;
+  opacity: 40%;
 }
 
 .csl-entry:target {
@@ -158,6 +328,3 @@ code {
   padding: 0;
   margin-left: 1ch;
 }
-
-
-
