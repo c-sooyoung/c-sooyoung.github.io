@@ -1,357 +1,431 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
 <head>
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>ptychographic iterative engine (PIE)</title>
-<!--   <style>
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    /* The extra [class] is a hack that increases specificity enough to
-       override a similar rule in reveal.js */
-    ul.task-list[class]{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      font-size: inherit;
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    /* CSS for citations */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-      margin-bottom: 0em;
-    }
-    .hanging-indent div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }  </style> -->
-  <link rel="stylesheet" href="wiki.css" />
-  <link rel="shortcut icon" type="image/png" href="./../favicon.png">
-  <script
-  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
-  type="text/javascript"></script>
-</head>
+          <title>ptychographic iterative engine (PIE)</title>
+
+  <!-- <style> code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+/* The extra [class] is a hack that increases specificity enough to
+   override a similar rule in reveal.js */
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  font-size: inherit;
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+} </style> -->
+
+  <style>
+        </style>
+
+  <link href="https://fonts.cdnfonts.com/css/cmu-serif" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/mona-sans" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/cascadia-code" rel="stylesheet">
+
+  <style>
+    @import url('https://fonts.cdnfonts.com/css/cascadia-code');
+    @import url('https://fonts.cdnfonts.com/css/mona-sans');
+    @import url('https://fonts.cdnfonts.com/css/cmu-serif');
+  </style>
+
+    <link rel="stylesheet" href="wiki.css" />
+  
+  
+    <script
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    type="text/javascript"></script>
+  </head>
+
 <body>
-<header id="title-block-header">
+  
+  <!-- <header id="title-block-header">
 <h1 class="title">ptychographic iterative engine (PIE)</h1>
 </header>
-<blockquote>
-<h4 id="notation">Notation</h4>
-<ul>
-<li><strong>Coordinates</strong>
-<ul>
-<li>Real-space coordinates: <span
-class="math inline">\(\mathbf{x}\)</span></li>
-<li>Reciprocal-space coordinates: <span
-class="math inline">\(\mathbf{k}\)</span></li>
-</ul></li>
-<li><strong>Reconstruction</strong>
-<ul>
-<li>The “object” (sample): <span class="math inline">\(O\)</span></li>
-<li>The “probe”: <span class="math inline">\(P\)</span></li>
-<li>The reconstructions are denoted with a carat: <span
-class="math inline">\(\hat{O}\)</span>, <span
-class="math inline">\(\hat{P}\)</span></li>
-<li>The <span class="math inline">\(n\)</span>th iteration is in
-parentheses: <span class="math inline">\(\hat{O}^{(n)}\)</span>, <span
-class="math inline">\(\hat{P}^{(n)}\)</span></li>
-<li>The scan positions are indexed with <span
-class="math inline">\(j\)</span>: <span
-class="math inline">\(\mathbf{X}_j\)</span></li>
-<li>The exit waves (“views”): <span
-class="math inline">\(\psi_j(\mathbf{x})\)</span></li>
-<li>The measured intensities: <span
-class="math inline">\(I_j(\mathbf{k})\)</span></li>
-</ul></li>
-</ul>
-</blockquote>
-<blockquote>
-<h4 id="see-also">See also</h4>
-<ul>
-<li>Faulkner, H. M. L. &amp; Rodenburg, J. M. Movable Aperture Lensless
-Transmission Microscopy: A Novel Phase Retrieval Algorithm. <em>Phys.
-Rev. Lett.</em> <strong>93</strong>, 023903 (2004).</li>
-<li>Rodenburg, J. M. &amp; Faulkner, H. M. L. A phase retrieval
-algorithm for shifting illumination. <em>Applied Physics Letters</em>
-<strong>85</strong>, 4795–4797 (2004).</li>
-<li>Rodenburg, J. M. <em>et al.</em> Hard-X-Ray Lensless Imaging of
-Extended Objects. <em>Phys. Rev. Lett.</em> <strong>98</strong>, 034801
-(2007).</li>
-</ul>
-</blockquote>
-<p>The <strong>Ptychographic Iterative Engine (PIE)</strong> is the
-first iterative algorithm used for <a href="ptychography.html"
-title="ptychography">ptychography</a> by Rodenburg and Faulkner <span
-class="citation"
-data-cites="faulknerMovableApertureLensless2004 rodenburgPhaseRetrievalAlgorithm2004">(<a
-href="#ref-faulknerMovableApertureLensless2004"
-role="doc-biblioref">1</a>,<a
-href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
-role="doc-biblioref">2</a>)</span>. PIE extends the traditional
-Gerchberg-Saxton algorithm <span class="citation"
-data-cites="gerchbergPracticalAlgorithmDetermination1972 fienupPhaseRetrievalAlgorithms1982">(<a
-href="#ref-gerchbergPracticalAlgorithmDetermination1972"
-role="doc-biblioref">3</a>,<a
-href="#ref-fienupPhaseRetrievalAlgorithms1982"
-role="doc-biblioref">4</a>)</span> to use the multiple probe positions
-of ptychography. Like the Gerchberg-Saxton algorithm, PIE works by
-repeatedly moving between the real and reciprocal spaces and applying
-the respective constraints in each space, solving piecewise for the
-whole object.</p>
-<p>Real space constraint: <span class="math display">\[
-\psi_j(\mathbf{x}) = O(\mathbf{x}) \cdot P(\mathbf{x} - \mathbf{X}_j)
-\]</span></p>
-<p>Reciprocal space constraint: <span class="math display">\[
-I_j(\mathbf{k}) = |{\Psi}_j(\mathbf{k})|^2 = | \mathcal{F}
-[\psi_j(\mathbf{x})] |^2
-\]</span></p>
-<h2 id="algorithm">Algorithm</h2>
-<p>Let us outline the basics of the original PIE algorithm given by
-Rodenburg and Faulkner in <span class="citation"
-data-cites="rodenburgPhaseRetrievalAlgorithm2004">(<a
-href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
-role="doc-biblioref">2</a>)</span>.</p>
-<blockquote>
-<h4 id="algorithm-summary">Algorithm summary</h4>
-<ol type="1">
-<li>Start with a guess: <span
-class="math inline">\(\hat{O}^{(n)}\)</span></li>
-<li>Create the exit waves: <span
-class="math inline">\(\hat{\psi}_j^{(n)}(\mathbf{x}) = P(\mathbf{x} -
-\mathbf{X}_j) \cdot \hat{O}_j^{(n)}(\mathbf{x})\)</span></li>
-<li>Propagate: <span class="math inline">\(\hat{\Psi}_j = \mathcal{F}[\
-\hat{\psi}_j\ ]\)</span></li>
-<li>Correct amplitudes: <span
-class="math inline">\(\hat{\Psi}^{\prime}_j = (\sqrt{I_j} /
-|\hat{\Psi}^{(n)}_j|) \times \hat{\Psi}^{(n)}_j\)</span></li>
-<li>Backpropagate: <span class="math inline">\(\hat{\psi}^{(n+1)}_j =
-\mathcal{F}^{-1}[\ \hat{\Psi}^{\prime} \ ]\)</span></li>
-<li>Update object according to: <span
-class="math display">\[\hat{O}_j^{(n+1)} = \hat{O}_j^{(n)} + \left[
-\frac{|P|}{P_{\mathrm{max}}} \right] \times \frac{P^{*}}{|P|^2 + \alpha}
-\times \beta \times (\hat{\psi}^{(n+1)}_j -
-\hat{\psi}^{(n)}_j)\]</span></li>
-<li>Select different scan position and repeat steps 2 ~ 6 until error
-converges <span class="math display">\[\epsilon = \sum_j{\left|\left|\
-I_j - |\hat{\Psi}_j|^2 \ \right|\right|^2}\]</span></li>
-</ol>
-</blockquote>
-<p>PIE assumes a known probe <span
-class="math inline">\(P(\mathbf{x})\)</span> at the object plane, given
-probe positions <span class="math inline">\(\mathbf{X}_j\)</span>, and
-their downstream intensity measurements <span
-class="math inline">\(I_j\)</span>. Usually these measurements will be
-at the diffraction plane connected via a Fourier transform.</p>
-<p>The algorithm starts with a guess of the object <span
-class="math inline">\(\hat{O}^{(n)}\)</span>. The exit wave of the <span
-class="math inline">\(j_\mathrm{th}\)</span> scan position is calculated
-with the usual model. (The lowercase <span
-class="math inline">\(\hat{o}\)</span> denotes a ‘piece’ of the object
-illuminated by the probe<a href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a>)</p>
-<p><span class="math display">\[
-\hat{\psi}_j^{(n)}(\mathbf{x}) = P(\mathbf{x} - \mathbf{X}_j) \cdot
-\hat{o}_j^{(n)}(\mathbf{x})
-\]</span></p>
-<p>The exit wave is propagated to the diffraction plane <span
-class="math inline">\(\hat{\Psi}(\mathbf{k}) = \mathcal{F} [\
-\hat{\psi}(\mathbf{x})\ ]\)</span><a href="#fn2" class="footnote-ref"
-id="fnref2" role="doc-noteref"><sup>2</sup></a>, then the reciprocal
-space constraint is applied.</p>
-<p><span class="math display">\[
-{\hat{\Psi}^{\prime}_j} = \frac{\sqrt{I_j}}{|\hat{\Psi}_j^{(n)}|}\
-\hat{\Psi}_j^{(n)}
-\]</span></p>
-<p>This “corrects” the amplitudes while keeping the phases of the
-guessed wave. The corrected wave is then backpropagated to become the
-new guess for the exit wave.</p>
-<p><span class="math display">\[
-\hat{\psi}_j^{(n+1)} = \mathcal{F}^{-1}[\ \hat{\Psi}_j^\prime\ ] = P
-\cdot \hat{o}_j^{(n+1)}
-\]</span></p>
-<p>Solving for <span class="math inline">\(\hat{o}\)</span> gives an
-update equation:</p>
-<p><span class="math display">\[
-\hat{o}_j^{(n+1)} = \hat{o}_j^{(n)} + \frac{1}{P} (\hat{\psi}^{(n+1)}_j
-- \hat{\psi}^{(n)}_j)
-\]</span></p>
-<p>Importantly, PIE tweaks this update equation with a weighting
-function related to <span class="math inline">\(P\)</span>, and the
-hyperparameters <span class="math inline">\(\alpha\)</span> and <span
-class="math inline">\(\beta\)</span> :</p>
-<p><span class="math display">\[
-\hat{o}_j^{(n+1)}(\mathbf{x}) = \hat{o}_j^{(n)}(\mathbf{x}) + \left[
-\frac{|P(\mathbf{x} - \mathbf{X}_j)|}{P_{\mathrm{max}}} \right] \times
-\frac{P^{*}(\mathbf{x} - \mathbf{X}_j)}{|P(\mathbf{x} - \mathbf{X}_j)|^2
-+ \alpha} \times \beta \times (\hat{\psi}^{(n+1)}_j(\mathbf{x}) -
-\hat{\psi}^{(n)}_j(\mathbf{x}))
-\]</span></p>
-<ul>
-<li>The weighting function <span class="math inline">\(\left[\ {|P|}\ /\
-{P_{\mathrm{max}}}\ \right]\)</span> gives credence to where the
-illumination is brightest to update those areas the most.<a href="#fn3"
-class="footnote-ref" id="fnref3"
-role="doc-noteref"><sup>3</sup></a></li>
-<li><span class="math inline">\(\alpha\)</span> ensures that a
-division-by-zero does not occur <a href="#fn4" class="footnote-ref"
-id="fnref4" role="doc-noteref"><sup>4</sup></a></li>
-<li><span class="math inline">\(\beta\)</span> controls the feedback;
-i.e. the size of the update at each iteration</li>
-</ul>
-<p>These steps are repeated for the next piece (next index <span
-class="math inline">\(j\)</span>) until the sum squared error <span
-class="math inline">\(\epsilon\)</span> converges. In practice, it is
-best to randomize the order of <span class="math inline">\(j\)</span>
-for each loop across the scan positions.</p>
-<p><span class="math display">\[
-\epsilon = \sum_j{\left\|\ I_j - |\hat{\Psi}_j|^2 \ \right\|^2}
-\]</span></p>
-<h2 id="simultaneously-solving-the-probe-epie">Simultaneously solving
-the probe: ePIE</h2>
-<blockquote>
-<h4 id="see-also-1">See also</h4>
-<ul>
-<li>Maiden, A. M. &amp; Rodenburg, J. M. An improved ptychographical
-phase retrieval algorithm for diffractive imaging.
-<em>Ultramicroscopy</em> <strong>109</strong>, 1256–1262 (2009).</li>
-</ul>
-</blockquote>
-<p>The simultaneous reconstruction of the probe has been a key part in
-the robustness of ptychography. Maiden and Rodenburg introduced the
-extended PIE (ePIE) algorithm in 2009 <span class="citation"
-data-cites="maidenImprovedPtychographicalPhase2009">(<a
-href="#ref-maidenImprovedPtychographicalPhase2009"
-role="doc-biblioref">5</a>)</span>, alongside the development of other
-probe-solving algorithms such as the Difference Map or Conjugate
-Gradient Descent.</p>
-<p>Steps 1~5 are identical to PIE, but a new update equation is used in
-ePIE. The weighting function uses the intensity instead of the
-amplitude, which cancels the <span class="math inline">\(|P(\mathbf{x} -
-\mathbf{X}_j)|^2\)</span> term in the denominator:</p>
-<p><span class="math display">\[
-\hat{o}_j^{(n+1)}(\mathbf{x}) = \hat{o}_j^{(n)}(\mathbf{x}) +
-\frac{{P^{(n)}}^*(\mathbf{x} -
-\mathbf{X}_j)}{{P^{(n)}}^2_{\mathrm{max}}} \times \beta_O \times
-(\hat{\psi}^{(n+1)}_j(\mathbf{x}) - \hat{\psi}^{(n)}_j(\mathbf{x}))
-\]</span></p>
-<p>Importantly, ePIE introduces an update equation for the probe, which
-is symmetric to the object update:</p>
-<p><span class="math display">\[
-\hat{P}^{(n+1)}(\mathbf{x}) = \hat{P}^{(n)}(\mathbf{x}) +
-\frac{{o^{(n)}}_j^{*}(\mathbf{x} + \mathbf{X}_j)}{{o^{(n)}}^2_{j,\
-\mathrm{max}}} \times \beta_P \times (\hat{\psi}^{(n+1)}_j(\mathbf{x}) -
-\hat{\psi}^{(n)}_j(\mathbf{x}))
-\]</span></p>
-<p>As the problematic denominator has been canceled, <span
-class="math inline">\(\alpha\)</span> is no longer needed. The
-hyperparameters <span class="math inline">\(\beta_O\)</span> and <span
-class="math inline">\(\beta_P\)</span> can be independently chosen for
-the update size; the original ePIE paper uses <span
-class="math inline">\(\beta_O = \beta_P = 1\)</span>.</p>
-<blockquote>
-<p>Comment:</p>
-<p>Note that the real space constraint <span class="math inline">\(\psi
-= O(\mathbf{x}) \cdot P(\mathbf{x} - \mathbf{X}_j)\)</span>, implies
-<span class="math inline">\(O\)</span> and <span
-class="math inline">\(P\)</span> are on equal footing. The only
-requirement is that <span class="math inline">\(\psi\)</span>
-<strong>can</strong> be separated into a product, and the factors can
-shift their positions independently. An algorithm cannot identify which
-of the factors is truly the ‘probe’ and which is the ‘object’. To the
-algorithm, reconstructing the probe and reconstructing the object is
-identical, which is reflected in the symmetry of the update equations of
-ePIE.</p>
-<p>In practice, because we want to image a large field of view from a
-localized probe, we set the dimensions of the probe as the array
-detector, and calculate the object size from the shift positions.
-However, from the algorithm’s point of view, it is indistinguishable to
-having a large ‘probe’ to image a small ‘object’.</p>
-</blockquote>
-<div id="refs" class="references csl-bib-body" data-entry-spacing="0"
-data-line-spacing="2" role="list">
-<div id="ref-faulknerMovableApertureLensless2004" class="csl-entry"
-role="listitem">
-<div class="csl-left-margin">1. </div><div
-class="csl-right-inline">Faulkner, H. M. L. &amp; Rodenburg, J. M. <a
-href="https://doi.org/10.1103/PhysRevLett.93.023903">Movable
-<span>Aperture Lensless Transmission Microscopy</span>: <span>A Novel
-Phase Retrieval Algorithm</span></a>. <em>Physical Review Letters</em>
-<strong>93,</strong> 023903 (2004).</div>
-</div>
-<div id="ref-rodenburgPhaseRetrievalAlgorithm2004" class="csl-entry"
-role="listitem">
-<div class="csl-left-margin">2. </div><div
-class="csl-right-inline">Rodenburg, J. M. &amp; Faulkner, H. M. L. <a
-href="https://doi.org/10.1063/1.1823034">A phase retrieval algorithm for
-shifting illumination</a>. <em>Applied Physics Letters</em>
-<strong>85,</strong> 4795–4797 (2004).</div>
-</div>
-<div id="ref-gerchbergPracticalAlgorithmDetermination1972"
-class="csl-entry" role="listitem">
-<div class="csl-left-margin">3. </div><div
-class="csl-right-inline">Gerchberg, R. W. &amp; Saxton, W. O. A
-<span>Practical Algorithm</span> for the <span>Determination</span> of
-<span>Phase</span> from <span>Image</span> and <span>Diffraction Plane
-Pictures</span>. <em>Optik</em> <strong>35,</strong> (1972).</div>
-</div>
-<div id="ref-fienupPhaseRetrievalAlgorithms1982" class="csl-entry"
-role="listitem">
-<div class="csl-left-margin">4. </div><div
-class="csl-right-inline">Fienup, J. R. <a
-href="https://doi.org/10.1364/AO.21.002758">Phase retrieval algorithms:
-A comparison</a>. <em>Applied Optics</em> <strong>21,</strong> 2758–2769
-(1982).</div>
-</div>
-<div id="ref-maidenImprovedPtychographicalPhase2009" class="csl-entry"
-role="listitem">
-<div class="csl-left-margin">5. </div><div
-class="csl-right-inline">Maiden, A. M. &amp; Rodenburg, J. M. <a
-href="https://doi.org/10.1016/j.ultramic.2009.05.012">An improved
-ptychographical phase retrieval algorithm for diffractive imaging</a>.
-<em>Ultramicroscopy</em> <strong>109,</strong> 1256–1262 (2009).</div>
-</div>
-</div>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>Most papers just denote the exit waves as: <span
-class="math display">\[
-\hat{\psi}(\mathbf{x}) = P(\mathbf{x} - \mathbf{X}) \cdot
-\hat{O}(\mathbf{x})
-\]</span> which assumes knowledge of the whole plane. For practical
-purposes, the (localized) probe is represented as an array with the same
-shape as the detector, and we need to cut out a piece of the total
-object corresponding to the probe position.<a href="#fnref1"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>In general, any propagator can be used (such as the
-Fresnel propagator)<a href="#fnref2" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>In Rodenburg and Faulkner’s words: &gt; “The function
-favors the inﬂuence of those areas of the specimen which have been
-strongly illuminated and attenuates the high errors which otherwise
-arise where the illumination was weak.”<a href="#fnref3"
-class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>In practice, one can use their computer’s machine
-epsilon value.<a href="#fnref4" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
+ -->
+
+  <div class="body-flexbox">
+    <header>
+      <div class="article-description">
+        <h1 class="title">ptychographic iterative engine (PIE)</h1>
+                <nav id="TOC" role="doc-toc">
+                    <ul>
+                    <li><a href="#algorithm"
+                    id="toc-algorithm">Algorithm</a></li>
+                    <li><a href="#simultaneously-solving-the-probe-epie"
+                    id="toc-simultaneously-solving-the-probe-epie">Simultaneously
+                    solving the probe: ePIE</a></li>
+                    </ul>
+        </nav>
+              </div>
+      <div class="kiwi-wiki-description">
+        <h2>kiwi wiki</h2>
+        <p>
+          A wiki / archive / library / blog of my interests.<br />
+          Not technically a wiki, but the name fit well with kiwi.
+        </p>
+        <span class="site-links">
+          <a href="./../">home</a>
+          <a href="https://github.com/c-sooyoung">github</a>
+        </span>
+      </div>
+    </header>
+
+    <main>
+      <blockquote>
+      <h4 id="notation">Notation</h4>
+      <ul>
+      <li><strong>Coordinates</strong>
+      <ul>
+      <li>Real-space coordinates: <span
+      class="math inline">\(\mathbf{x}\)</span></li>
+      <li>Reciprocal-space coordinates: <span
+      class="math inline">\(\mathbf{k}\)</span></li>
+      </ul></li>
+      <li><strong>Reconstruction</strong>
+      <ul>
+      <li>The “object” (sample): <span
+      class="math inline">\(O\)</span></li>
+      <li>The “probe”: <span class="math inline">\(P\)</span></li>
+      <li>The reconstructions are denoted with a carat: <span
+      class="math inline">\(\hat{O}\)</span>, <span
+      class="math inline">\(\hat{P}\)</span></li>
+      <li>The <span class="math inline">\(n\)</span>th iteration is in
+      parentheses: <span class="math inline">\(\hat{O}^{(n)}\)</span>,
+      <span class="math inline">\(\hat{P}^{(n)}\)</span></li>
+      <li>The scan positions are indexed with <span
+      class="math inline">\(j\)</span>: <span
+      class="math inline">\(\mathbf{X}_j\)</span></li>
+      <li>The exit waves (“views”): <span
+      class="math inline">\(\psi_j(\mathbf{x})\)</span></li>
+      <li>The measured intensities: <span
+      class="math inline">\(I_j(\mathbf{k})\)</span></li>
+      </ul></li>
+      </ul>
+      </blockquote>
+      <blockquote>
+      <h4 id="see-also">See also</h4>
+      <ul>
+      <li>Faulkner, H. M. L. &amp; Rodenburg, J. M. Movable Aperture
+      Lensless Transmission Microscopy: A Novel Phase Retrieval
+      Algorithm. <em>Phys. Rev. Lett.</em> <strong>93</strong>, 023903
+      (2004).</li>
+      <li>Rodenburg, J. M. &amp; Faulkner, H. M. L. A phase retrieval
+      algorithm for shifting illumination. <em>Applied Physics
+      Letters</em> <strong>85</strong>, 4795–4797 (2004).</li>
+      <li>Rodenburg, J. M. <em>et al.</em> Hard-X-Ray Lensless Imaging
+      of Extended Objects. <em>Phys. Rev. Lett.</em>
+      <strong>98</strong>, 034801 (2007).</li>
+      </ul>
+      </blockquote>
+      <p>The <strong>Ptychographic Iterative Engine (PIE)</strong> is
+      the first iterative algorithm used for <a href="ptychography.html"
+      title="ptychography">ptychography</a> by Rodenburg and Faulkner
+      <span class="citation"
+      data-cites="faulknerMovableApertureLensless2004 rodenburgPhaseRetrievalAlgorithm2004">(<a
+      href="#ref-faulknerMovableApertureLensless2004"
+      role="doc-biblioref">1</a>,<a
+      href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
+      role="doc-biblioref">2</a>)</span>. PIE extends the traditional
+      Gerchberg-Saxton algorithm <span class="citation"
+      data-cites="gerchbergPracticalAlgorithmDetermination1972 fienupPhaseRetrievalAlgorithms1982">(<a
+      href="#ref-gerchbergPracticalAlgorithmDetermination1972"
+      role="doc-biblioref">3</a>,<a
+      href="#ref-fienupPhaseRetrievalAlgorithms1982"
+      role="doc-biblioref">4</a>)</span> to use the multiple probe
+      positions of ptychography. Like the Gerchberg-Saxton algorithm,
+      PIE works by repeatedly moving between the real and reciprocal
+      spaces and applying the respective constraints in each space,
+      solving piecewise for the whole object.</p>
+      <p>Real space constraint: <span class="math display">\[
+      \psi_j(\mathbf{x}) = O(\mathbf{x}) \cdot P(\mathbf{x} -
+      \mathbf{X}_j)
+      \]</span></p>
+      <p>Reciprocal space constraint: <span class="math display">\[
+      I_j(\mathbf{k}) = |{\Psi}_j(\mathbf{k})|^2 = | \mathcal{F}
+      [\psi_j(\mathbf{x})] |^2
+      \]</span></p>
+      <h2 id="algorithm">Algorithm</h2>
+      <p>Let us outline the basics of the original PIE algorithm given
+      by Rodenburg and Faulkner in <span class="citation"
+      data-cites="rodenburgPhaseRetrievalAlgorithm2004">(<a
+      href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
+      role="doc-biblioref">2</a>)</span>.</p>
+      <blockquote>
+      <h4 id="algorithm-summary">Algorithm summary</h4>
+      <ol type="1">
+      <li>Start with a guess: <span
+      class="math inline">\(\hat{O}^{(n)}\)</span></li>
+      <li>Create the exit waves: <span
+      class="math inline">\(\hat{\psi}_j^{(n)}(\mathbf{x}) =
+      P(\mathbf{x} - \mathbf{X}_j) \cdot
+      \hat{O}_j^{(n)}(\mathbf{x})\)</span></li>
+      <li>Propagate: <span class="math inline">\(\hat{\Psi}_j =
+      \mathcal{F}[\ \hat{\psi}_j\ ]\)</span></li>
+      <li>Correct amplitudes: <span
+      class="math inline">\(\hat{\Psi}^{\prime}_j = (\sqrt{I_j} /
+      |\hat{\Psi}^{(n)}_j|) \times \hat{\Psi}^{(n)}_j\)</span></li>
+      <li>Backpropagate: <span
+      class="math inline">\(\hat{\psi}^{(n+1)}_j = \mathcal{F}^{-1}[\
+      \hat{\Psi}^{\prime} \ ]\)</span></li>
+      <li>Update object according to: <span
+      class="math display">\[\hat{O}_j^{(n+1)} = \hat{O}_j^{(n)} +
+      \left[ \frac{|P|}{P_{\mathrm{max}}} \right] \times
+      \frac{P^{*}}{|P|^2 + \alpha} \times \beta \times
+      (\hat{\psi}^{(n+1)}_j - \hat{\psi}^{(n)}_j)\]</span></li>
+      <li>Select different scan position and repeat steps 2 ~ 6 until
+      error converges <span class="math display">\[\epsilon =
+      \sum_j{\left|\left|\ I_j - |\hat{\Psi}_j|^2 \
+      \right|\right|^2}\]</span></li>
+      </ol>
+      </blockquote>
+      <p>PIE assumes a known probe <span
+      class="math inline">\(P(\mathbf{x})\)</span> at the object plane,
+      given probe positions <span
+      class="math inline">\(\mathbf{X}_j\)</span>, and their downstream
+      intensity measurements <span class="math inline">\(I_j\)</span>.
+      Usually these measurements will be at the diffraction plane
+      connected via a Fourier transform.</p>
+      <p>The algorithm starts with a guess of the object <span
+      class="math inline">\(\hat{O}^{(n)}\)</span>. The exit wave of the
+      <span class="math inline">\(j_\mathrm{th}\)</span> scan position
+      is calculated with the usual model. (The lowercase <span
+      class="math inline">\(\hat{o}\)</span> denotes a ‘piece’ of the
+      object illuminated by the probe<a href="#fn1" class="footnote-ref"
+      id="fnref1" role="doc-noteref"><sup>1</sup></a>)</p>
+      <p><span class="math display">\[
+      \hat{\psi}_j^{(n)}(\mathbf{x}) = P(\mathbf{x} - \mathbf{X}_j)
+      \cdot \hat{o}_j^{(n)}(\mathbf{x})
+      \]</span></p>
+      <p>The exit wave is propagated to the diffraction plane <span
+      class="math inline">\(\hat{\Psi}(\mathbf{k}) = \mathcal{F} [\
+      \hat{\psi}(\mathbf{x})\ ]\)</span><a href="#fn2"
+      class="footnote-ref" id="fnref2"
+      role="doc-noteref"><sup>2</sup></a>, then the reciprocal space
+      constraint is applied.</p>
+      <p><span class="math display">\[
+      {\hat{\Psi}^{\prime}_j} = \frac{\sqrt{I_j}}{|\hat{\Psi}_j^{(n)}|}\
+      \hat{\Psi}_j^{(n)}
+      \]</span></p>
+      <p>This “corrects” the amplitudes while keeping the phases of the
+      guessed wave. The corrected wave is then backpropagated to become
+      the new guess for the exit wave.</p>
+      <p><span class="math display">\[
+      \hat{\psi}_j^{(n+1)} = \mathcal{F}^{-1}[\ \hat{\Psi}_j^\prime\ ] =
+      P \cdot \hat{o}_j^{(n+1)}
+      \]</span></p>
+      <p>Solving for <span class="math inline">\(\hat{o}\)</span> gives
+      an update equation:</p>
+      <p><span class="math display">\[
+      \hat{o}_j^{(n+1)} = \hat{o}_j^{(n)} + \frac{1}{P}
+      (\hat{\psi}^{(n+1)}_j - \hat{\psi}^{(n)}_j)
+      \]</span></p>
+      <p>Importantly, PIE tweaks this update equation with a weighting
+      function related to <span class="math inline">\(P\)</span>, and
+      the hyperparameters <span class="math inline">\(\alpha\)</span>
+      and <span class="math inline">\(\beta\)</span> :</p>
+      <p><span class="math display">\[
+      \hat{o}_j^{(n+1)}(\mathbf{x}) = \hat{o}_j^{(n)}(\mathbf{x}) +
+      \left[ \frac{|P(\mathbf{x} - \mathbf{X}_j)|}{P_{\mathrm{max}}}
+      \right] \times \frac{P^{*}(\mathbf{x} -
+      \mathbf{X}_j)}{|P(\mathbf{x} - \mathbf{X}_j)|^2 + \alpha} \times
+      \beta \times (\hat{\psi}^{(n+1)}_j(\mathbf{x}) -
+      \hat{\psi}^{(n)}_j(\mathbf{x}))
+      \]</span></p>
+      <ul>
+      <li>The weighting function <span class="math inline">\(\left[\
+      {|P|}\ /\ {P_{\mathrm{max}}}\ \right]\)</span> gives credence to
+      where the illumination is brightest to update those areas the
+      most.<a href="#fn3" class="footnote-ref" id="fnref3"
+      role="doc-noteref"><sup>3</sup></a></li>
+      <li><span class="math inline">\(\alpha\)</span> ensures that a
+      division-by-zero does not occur <a href="#fn4"
+      class="footnote-ref" id="fnref4"
+      role="doc-noteref"><sup>4</sup></a></li>
+      <li><span class="math inline">\(\beta\)</span> controls the
+      feedback; i.e. the size of the update at each iteration</li>
+      </ul>
+      <p>These steps are repeated for the next piece (next index <span
+      class="math inline">\(j\)</span>) until the sum squared error
+      <span class="math inline">\(\epsilon\)</span> converges. In
+      practice, it is best to randomize the order of <span
+      class="math inline">\(j\)</span> for each loop across the scan
+      positions.</p>
+      <p><span class="math display">\[
+      \epsilon = \sum_j{\left\|\ I_j - |\hat{\Psi}_j|^2 \ \right\|^2}
+      \]</span></p>
+      <h2 id="simultaneously-solving-the-probe-epie">Simultaneously
+      solving the probe: ePIE</h2>
+      <blockquote>
+      <h4 id="see-also-1">See also</h4>
+      <ul>
+      <li>Maiden, A. M. &amp; Rodenburg, J. M. An improved
+      ptychographical phase retrieval algorithm for diffractive imaging.
+      <em>Ultramicroscopy</em> <strong>109</strong>, 1256–1262
+      (2009).</li>
+      </ul>
+      </blockquote>
+      <p>The simultaneous reconstruction of the probe has been a key
+      part in the robustness of ptychography. Maiden and Rodenburg
+      introduced the extended PIE (ePIE) algorithm in 2009 <span
+      class="citation"
+      data-cites="maidenImprovedPtychographicalPhase2009">(<a
+      href="#ref-maidenImprovedPtychographicalPhase2009"
+      role="doc-biblioref">5</a>)</span>, alongside the development of
+      other probe-solving algorithms such as the Difference Map or
+      Conjugate Gradient Descent.</p>
+      <p>Steps 1~5 are identical to PIE, but a new update equation is
+      used in ePIE. The weighting function uses the intensity instead of
+      the amplitude, which cancels the <span
+      class="math inline">\(|P(\mathbf{x} - \mathbf{X}_j)|^2\)</span>
+      term in the denominator:</p>
+      <p><span class="math display">\[
+      \hat{o}_j^{(n+1)}(\mathbf{x}) = \hat{o}_j^{(n)}(\mathbf{x}) +
+      \frac{{P^{(n)}}^*(\mathbf{x} -
+      \mathbf{X}_j)}{{P^{(n)}}^2_{\mathrm{max}}} \times \beta_O \times
+      (\hat{\psi}^{(n+1)}_j(\mathbf{x}) -
+      \hat{\psi}^{(n)}_j(\mathbf{x}))
+      \]</span></p>
+      <p>Importantly, ePIE introduces an update equation for the probe,
+      which is symmetric to the object update:</p>
+      <p><span class="math display">\[
+      \hat{P}^{(n+1)}(\mathbf{x}) = \hat{P}^{(n)}(\mathbf{x}) +
+      \frac{{o^{(n)}}_j^{*}(\mathbf{x} + \mathbf{X}_j)}{{o^{(n)}}^2_{j,\
+      \mathrm{max}}} \times \beta_P \times
+      (\hat{\psi}^{(n+1)}_j(\mathbf{x}) -
+      \hat{\psi}^{(n)}_j(\mathbf{x}))
+      \]</span></p>
+      <p>As the problematic denominator has been canceled, <span
+      class="math inline">\(\alpha\)</span> is no longer needed. The
+      hyperparameters <span class="math inline">\(\beta_O\)</span> and
+      <span class="math inline">\(\beta_P\)</span> can be independently
+      chosen for the update size; the original ePIE paper uses <span
+      class="math inline">\(\beta_O = \beta_P = 1\)</span>.</p>
+      <blockquote>
+      <p>Comment:</p>
+      <p>Note that the real space constraint <span
+      class="math inline">\(\psi = O(\mathbf{x}) \cdot P(\mathbf{x} -
+      \mathbf{X}_j)\)</span>, implies <span
+      class="math inline">\(O\)</span> and <span
+      class="math inline">\(P\)</span> are on equal footing. The only
+      requirement is that <span class="math inline">\(\psi\)</span>
+      <strong>can</strong> be separated into a product, and the factors
+      can shift their positions independently. An algorithm cannot
+      identify which of the factors is truly the ‘probe’ and which is
+      the ‘object’. To the algorithm, reconstructing the probe and
+      reconstructing the object is identical, which is reflected in the
+      symmetry of the update equations of ePIE.</p>
+      <p>In practice, because we want to image a large field of view
+      from a localized probe, we set the dimensions of the probe as the
+      array detector, and calculate the object size from the shift
+      positions. However, from the algorithm’s point of view, it is
+      indistinguishable to having a large ‘probe’ to image a small
+      ‘object’.</p>
+      </blockquote>
+      <div id="refs" class="references csl-bib-body"
+      data-line-spacing="2" role="list">
+      <div id="ref-faulknerMovableApertureLensless2004"
+      class="csl-entry" role="listitem">
+      <div class="csl-left-margin">1. </div><div
+      class="csl-right-inline">Faulkner, H. M. L. &amp; Rodenburg, J. M.
+      <a href="https://doi.org/10.1103/PhysRevLett.93.023903">Movable
+      <span>Aperture Lensless Transmission Microscopy</span>: <span>A
+      Novel Phase Retrieval Algorithm</span></a>. <em>Physical Review
+      Letters</em> <strong>93,</strong> 023903 (2004).</div>
+      </div>
+      <div id="ref-rodenburgPhaseRetrievalAlgorithm2004"
+      class="csl-entry" role="listitem">
+      <div class="csl-left-margin">2. </div><div
+      class="csl-right-inline">Rodenburg, J. M. &amp; Faulkner, H. M. L.
+      <a href="https://doi.org/10.1063/1.1823034">A phase retrieval
+      algorithm for shifting illumination</a>. <em>Applied Physics
+      Letters</em> <strong>85,</strong> 4795–4797 (2004).</div>
+      </div>
+      <div id="ref-gerchbergPracticalAlgorithmDetermination1972"
+      class="csl-entry" role="listitem">
+      <div class="csl-left-margin">3. </div><div
+      class="csl-right-inline">Gerchberg, R. W. &amp; Saxton, W. O. A
+      <span>Practical Algorithm</span> for the
+      <span>Determination</span> of <span>Phase</span> from
+      <span>Image</span> and <span>Diffraction Plane Pictures</span>.
+      <em>Optik</em> <strong>35,</strong> (1972).</div>
+      </div>
+      <div id="ref-fienupPhaseRetrievalAlgorithms1982" class="csl-entry"
+      role="listitem">
+      <div class="csl-left-margin">4. </div><div
+      class="csl-right-inline">Fienup, J. R. <a
+      href="https://doi.org/10.1364/AO.21.002758">Phase retrieval
+      algorithms: A comparison</a>. <em>Applied Optics</em>
+      <strong>21,</strong> 2758–2769 (1982).</div>
+      </div>
+      <div id="ref-maidenImprovedPtychographicalPhase2009"
+      class="csl-entry" role="listitem">
+      <div class="csl-left-margin">5. </div><div
+      class="csl-right-inline">Maiden, A. M. &amp; Rodenburg, J. M. <a
+      href="https://doi.org/10.1016/j.ultramic.2009.05.012">An improved
+      ptychographical phase retrieval algorithm for diffractive
+      imaging</a>. <em>Ultramicroscopy</em> <strong>109,</strong>
+      1256–1262 (2009).</div>
+      </div>
+      </div>
+      <aside id="footnotes" class="footnotes footnotes-end-of-document"
+      role="doc-endnotes">
+      <hr />
+      <ol>
+      <li id="fn1"><p>Most papers just denote the exit waves as: <span
+      class="math display">\[
+      \hat{\psi}(\mathbf{x}) = P(\mathbf{x} - \mathbf{X}) \cdot
+      \hat{O}(\mathbf{x})
+      \]</span> which assumes knowledge of the whole plane. For
+      practical purposes, the (localized) probe is represented as an
+      array with the same shape as the detector, and we need to cut out
+      a piece of the total object corresponding to the probe position.<a
+      href="#fnref1" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      <li id="fn2"><p>In general, any propagator can be used (such as
+      the Fresnel propagator)<a href="#fnref2" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      <li id="fn3"><p>In Rodenburg and Faulkner’s words: &gt; “The
+      function favors the inﬂuence of those areas of the specimen which
+      have been strongly illuminated and attenuates the high errors
+      which otherwise arise where the illumination was weak.”<a
+      href="#fnref3" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      <li id="fn4"><p>In practice, one can use their computer’s machine
+      epsilon value.<a href="#fnref4" class="footnote-back"
+      role="doc-backlink">↩︎</a></p></li>
+      </ol>
+      </aside>
+    </main>
+  </div>
+
+  
 </body>
+
 </html>
