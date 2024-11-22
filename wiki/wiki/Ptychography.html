@@ -5,57 +5,13 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-          <title>ptychography</title>
-
-  <!-- <style> code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-/* The extra [class] is a hack that increases specificity enough to
-   override a similar rule in reveal.js */
-ul.task-list[class]{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  font-size: inherit;
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
-  vertical-align: middle;
-}
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-} </style> -->
+          <title>kiwi wiki – Ptychography</title>
 
   <style>
-        </style>
+       </style>
 
-  <link href="https://fonts.cdnfonts.com/css/cmu-serif" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/mona-sans" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/cascadia-code" rel="stylesheet">
-
-  <style>
-    @import url('https://fonts.cdnfonts.com/css/cascadia-code');
-    @import url('https://fonts.cdnfonts.com/css/mona-sans');
-    @import url('https://fonts.cdnfonts.com/css/cmu-serif');
-  </style>
-
-    <link rel="stylesheet" href="wiki.css" />
+    <link rel="stylesheet" href="../wiki.css" />
+    <link rel="stylesheet" href="../fonts.css" />
   
   
     <script
@@ -65,17 +21,18 @@ div.csl-indent {
 
 <body>
   
-  <!-- <header id="title-block-header">
-<h1 class="title">ptychography</h1>
-</header>
- -->
+  <!--   <header id="title-block-header">
+    <h1 class="title">Ptychography</h1>
+                  </header>
+   -->
 
   <div class="body-flexbox">
     <header>
       <div class="article-description">
-        <h1 class="title">ptychography</h1>
+        <h1 class="title">Ptychography</h1>
                 <nav id="TOC" role="doc-toc">
                     <ul>
+                    <li><a href="#top" id="toc-top">(Top)</a></li>
                     <li><a href="#experimental-setup"
                     id="toc-experimental-setup">Experimental
                     setup</a></li>
@@ -92,6 +49,8 @@ div.csl-indent {
                     id="toc-relaxing-assumptions">Relaxing
                     assumptions</a></li>
                     </ul></li>
+                    <li><a href="#bibliography"
+                    id="toc-bibliography">References</a></li>
                     </ul>
         </nav>
               </div>
@@ -109,6 +68,7 @@ div.csl-indent {
     </header>
 
     <main>
+      <h2 class="top-marker" id="top">(Top)</h2>
       <p><strong>Ptychography</strong> is an computational imaging
       technique built on methods from scanning transmission
       electron/X-ray microscopy (STE/XM) and coherent diffraction
@@ -136,8 +96,8 @@ div.csl-indent {
       resolutions.</p>
       <p>Implementations of ptychography may vary considerably in the
       choice of <a href="#inverse-solvers"
-      title="§Inverse solvers">reconstruction algorithms</a> they employ
-      and the methods they use to achieve stronger <a
+      title="§Inverse solvers">inverse solver algorithms</a> and the
+      methods they use to achieve stronger <a
       href="#relaxing-assumptions"
       title="§Relaxing assumptions">experimental robustness</a>.
       However, they all share the common notion of overlapping
@@ -145,8 +105,8 @@ div.csl-indent {
       <h2 id="experimental-setup">Experimental setup</h2>
       <blockquote>
       <figure>
-      <img src="assets/ptychography/20241120_093515.png" width="300"
-      alt="300" />
+      <img src="assets/Ptychography-20241122_111504.png"
+      title="wikilink" width="300" alt="300" />
       </figure>
       <p><strong>Schematic of defocused probe electron
       ptychography.</strong><br />
@@ -271,8 +231,7 @@ div.csl-indent {
       data-cites="rodenburgPtychography2019">(<a
       href="#ref-rodenburgPtychography2019"
       role="doc-biblioref">1</a>)</span>. Detailed explanation with code
-      examples can (hopefully, in the future) be found by following the
-      links.</p>
+      examples can (hopefully) be found by following the links.</p>
       <h3 id="inverse-solvers">Inverse solvers</h3>
       <p>The first type (called Class 1 by Rodenburg and Maiden) of
       algorithms are those that directly solve for the phases.
@@ -293,9 +252,9 @@ div.csl-indent {
       role="doc-biblioref">13</a>)</span> by attempting an analytic
       solution, called Wigner Distribution Deconvolution (WDD).</p>
       <p>Beginning with the <a
-      href="ptychographic iterative engine (PIE).html"
-      title="ptychographic iterative engine (PIE)">ptychographic
-      iterative engine (PIE)</a> algorithm by Rodenburg and Faulkner
+      href="Ptychographic Iterative Engine (PIE).html"
+      title="Ptychographic Iterative Engine (PIE)">Ptychographic
+      Iterative Engine (PIE)</a> algorithm by Rodenburg and Faulkner
       <span class="citation"
       data-cites="rodenburgPhaseRetrievalAlgorithm2004">(<a
       href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
@@ -366,8 +325,9 @@ div.csl-indent {
       href="#ref-odstrcilIterativeLeastsquaresSolver2018"
       role="doc-biblioref">21</a>)</span> can be done through various
       optimization schemes.</p>
+      <h2 class="unnumbered" id="bibliography">References</h2>
       <div id="refs" class="references csl-bib-body"
-      data-line-spacing="2" role="list">
+      data-entry-spacing="0" data-line-spacing="2" role="list">
       <div id="ref-rodenburgPtychography2019" class="csl-entry"
       role="listitem">
       <div class="csl-left-margin">1. </div><div

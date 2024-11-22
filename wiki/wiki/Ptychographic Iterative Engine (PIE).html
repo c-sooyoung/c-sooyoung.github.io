@@ -5,57 +5,14 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-          <title>ptychographic iterative engine (PIE)</title>
-
-  <!-- <style> code{white-space: pre-wrap;}
-span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
-div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-/* The extra [class] is a hack that increases specificity enough to
-   override a similar rule in reveal.js */
-ul.task-list[class]{list-style: none;}
-ul.task-list li input[type="checkbox"] {
-  font-size: inherit;
-  width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
-  vertical-align: middle;
-}
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-} </style> -->
+          <title>kiwi
+wiki – Ptychographic Iterative Engine (PIE)</title>
 
   <style>
-        </style>
+       </style>
 
-  <link href="https://fonts.cdnfonts.com/css/cmu-serif" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/mona-sans" rel="stylesheet">
-  <link href="https://fonts.cdnfonts.com/css/cascadia-code" rel="stylesheet">
-
-  <style>
-    @import url('https://fonts.cdnfonts.com/css/cascadia-code');
-    @import url('https://fonts.cdnfonts.com/css/mona-sans');
-    @import url('https://fonts.cdnfonts.com/css/cmu-serif');
-  </style>
-
-    <link rel="stylesheet" href="wiki.css" />
+    <link rel="stylesheet" href="../wiki.css" />
+    <link rel="stylesheet" href="../fonts.css" />
   
   
     <script
@@ -65,22 +22,25 @@ div.csl-indent {
 
 <body>
   
-  <!-- <header id="title-block-header">
-<h1 class="title">ptychographic iterative engine (PIE)</h1>
-</header>
- -->
+  <!--   <header id="title-block-header">
+    <h1 class="title">Ptychographic Iterative Engine (PIE)</h1>
+                  </header>
+   -->
 
   <div class="body-flexbox">
     <header>
       <div class="article-description">
-        <h1 class="title">ptychographic iterative engine (PIE)</h1>
+        <h1 class="title">Ptychographic Iterative Engine (PIE)</h1>
                 <nav id="TOC" role="doc-toc">
                     <ul>
+                    <li><a href="#top" id="toc-top">(Top)</a></li>
                     <li><a href="#algorithm"
                     id="toc-algorithm">Algorithm</a></li>
                     <li><a href="#simultaneously-solving-the-probe-epie"
                     id="toc-simultaneously-solving-the-probe-epie">Simultaneously
                     solving the probe: ePIE</a></li>
+                    <li><a href="#bibliography"
+                    id="toc-bibliography">References</a></li>
                     </ul>
         </nav>
               </div>
@@ -98,6 +58,34 @@ div.csl-indent {
     </header>
 
     <main>
+      <h2 class="top-marker" id="top">(Top)</h2>
+      <p>The <strong>Ptychographic Iterative Engine (PIE)</strong> is
+      the first iterative algorithm used for <a href="ptychography.html"
+      title="ptychography">ptychography</a> by Rodenburg and Faulkner
+      <span class="citation"
+      data-cites="faulknerMovableApertureLensless2004 rodenburgPhaseRetrievalAlgorithm2004">(<a
+      href="#ref-faulknerMovableApertureLensless2004"
+      role="doc-biblioref">1</a>,<a
+      href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
+      role="doc-biblioref">2</a>)</span>. PIE extends the traditional
+      Gerchberg-Saxton algorithm <span class="citation"
+      data-cites="gerchbergPracticalAlgorithmDetermination1972 fienupPhaseRetrievalAlgorithms1982">(<a
+      href="#ref-gerchbergPracticalAlgorithmDetermination1972"
+      role="doc-biblioref">3</a>,<a
+      href="#ref-fienupPhaseRetrievalAlgorithms1982"
+      role="doc-biblioref">4</a>)</span> to use the multiple probe
+      positions of ptychography. Like the Gerchberg-Saxton algorithm,
+      PIE works by repeatedly moving between the real and reciprocal
+      spaces and applying the respective constraints in each space,
+      solving piecewise for the whole object.</p>
+      <p>Real space constraint: <span class="math display">\[
+      \psi_j(\mathbf{x}) = O(\mathbf{x}) \cdot P(\mathbf{x} -
+      \mathbf{X}_j)
+      \]</span></p>
+      <p>Reciprocal space constraint: <span class="math display">\[
+      I_j(\mathbf{k}) = |{\Psi}_j(\mathbf{k})|^2 = | \mathcal{F}
+      [\psi_j(\mathbf{x})] |^2
+      \]</span></p>
       <blockquote>
       <h4 id="notation">Notation</h4>
       <ul>
@@ -144,33 +132,6 @@ div.csl-indent {
       <strong>98</strong>, 034801 (2007).</li>
       </ul>
       </blockquote>
-      <p>The <strong>Ptychographic Iterative Engine (PIE)</strong> is
-      the first iterative algorithm used for <a href="ptychography.html"
-      title="ptychography">ptychography</a> by Rodenburg and Faulkner
-      <span class="citation"
-      data-cites="faulknerMovableApertureLensless2004 rodenburgPhaseRetrievalAlgorithm2004">(<a
-      href="#ref-faulknerMovableApertureLensless2004"
-      role="doc-biblioref">1</a>,<a
-      href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
-      role="doc-biblioref">2</a>)</span>. PIE extends the traditional
-      Gerchberg-Saxton algorithm <span class="citation"
-      data-cites="gerchbergPracticalAlgorithmDetermination1972 fienupPhaseRetrievalAlgorithms1982">(<a
-      href="#ref-gerchbergPracticalAlgorithmDetermination1972"
-      role="doc-biblioref">3</a>,<a
-      href="#ref-fienupPhaseRetrievalAlgorithms1982"
-      role="doc-biblioref">4</a>)</span> to use the multiple probe
-      positions of ptychography. Like the Gerchberg-Saxton algorithm,
-      PIE works by repeatedly moving between the real and reciprocal
-      spaces and applying the respective constraints in each space,
-      solving piecewise for the whole object.</p>
-      <p>Real space constraint: <span class="math display">\[
-      \psi_j(\mathbf{x}) = O(\mathbf{x}) \cdot P(\mathbf{x} -
-      \mathbf{X}_j)
-      \]</span></p>
-      <p>Reciprocal space constraint: <span class="math display">\[
-      I_j(\mathbf{k}) = |{\Psi}_j(\mathbf{k})|^2 = | \mathcal{F}
-      [\psi_j(\mathbf{x})] |^2
-      \]</span></p>
       <h2 id="algorithm">Algorithm</h2>
       <p>Let us outline the basics of the original PIE algorithm given
       by Rodenburg and Faulkner in <span class="citation"
@@ -199,7 +160,7 @@ div.csl-indent {
       \left[ \frac{|P|}{P_{\mathrm{max}}} \right] \times
       \frac{P^{*}}{|P|^2 + \alpha} \times \beta \times
       (\hat{\psi}^{(n+1)}_j - \hat{\psi}^{(n)}_j)\]</span></li>
-      <li>Select different scan position and repeat steps 2 ~ 6 until
+      <li>Select different scan position and repeat steps 2 to 6 until
       error converges <span class="math display">\[\epsilon =
       \sum_j{\left|\left|\ I_j - |\hat{\Psi}_j|^2 \
       \right|\right|^2}\]</span></li>
@@ -217,17 +178,14 @@ div.csl-indent {
       <span class="math inline">\(j_\mathrm{th}\)</span> scan position
       is calculated with the usual model. (The lowercase <span
       class="math inline">\(\hat{o}\)</span> denotes a ‘piece’ of the
-      object illuminated by the probe<a href="#fn1" class="footnote-ref"
-      id="fnref1" role="doc-noteref"><sup>1</sup></a>)</p>
+      object illuminated by the probe)</p>
       <p><span class="math display">\[
       \hat{\psi}_j^{(n)}(\mathbf{x}) = P(\mathbf{x} - \mathbf{X}_j)
       \cdot \hat{o}_j^{(n)}(\mathbf{x})
       \]</span></p>
       <p>The exit wave is propagated to the diffraction plane <span
       class="math inline">\(\hat{\Psi}(\mathbf{k}) = \mathcal{F} [\
-      \hat{\psi}(\mathbf{x})\ ]\)</span><a href="#fn2"
-      class="footnote-ref" id="fnref2"
-      role="doc-noteref"><sup>2</sup></a>, then the reciprocal space
+      \hat{\psi}(\mathbf{x})\ ]\)</span>, then the reciprocal space
       constraint is applied.</p>
       <p><span class="math display">\[
       {\hat{\Psi}^{\prime}_j} = \frac{\sqrt{I_j}}{|\hat{\Psi}_j^{(n)}|}\
@@ -262,14 +220,11 @@ div.csl-indent {
       <li>The weighting function <span class="math inline">\(\left[\
       {|P|}\ /\ {P_{\mathrm{max}}}\ \right]\)</span> gives credence to
       where the illumination is brightest to update those areas the
-      most.<a href="#fn3" class="footnote-ref" id="fnref3"
-      role="doc-noteref"><sup>3</sup></a></li>
+      most.</li>
       <li><span class="math inline">\(\alpha\)</span> ensures that a
-      division-by-zero does not occur <a href="#fn4"
-      class="footnote-ref" id="fnref4"
-      role="doc-noteref"><sup>4</sup></a></li>
+      division-by-zero does not occur.</li>
       <li><span class="math inline">\(\beta\)</span> controls the
-      feedback; i.e. the size of the update at each iteration</li>
+      feedback; i.e. the size of the update at each iteration.</li>
       </ul>
       <p>These steps are repeated for the next piece (next index <span
       class="math inline">\(j\)</span>) until the sum squared error
@@ -300,7 +255,7 @@ div.csl-indent {
       role="doc-biblioref">5</a>)</span>, alongside the development of
       other probe-solving algorithms such as the Difference Map or
       Conjugate Gradient Descent.</p>
-      <p>Steps 1~5 are identical to PIE, but a new update equation is
+      <p>Steps 1 to 5 are identical to PIE, but a new update equation is
       used in ePIE. The weighting function uses the intensity instead of
       the amplitude, which cancels the <span
       class="math inline">\(|P(\mathbf{x} - \mathbf{X}_j)|^2\)</span>
@@ -348,8 +303,9 @@ div.csl-indent {
       indistinguishable to having a large ‘probe’ to image a small
       ‘object’.</p>
       </blockquote>
+      <h2 class="unnumbered" id="bibliography">References</h2>
       <div id="refs" class="references csl-bib-body"
-      data-line-spacing="2" role="list">
+      data-entry-spacing="0" data-line-spacing="2" role="list">
       <div id="ref-faulknerMovableApertureLensless2004"
       class="csl-entry" role="listitem">
       <div class="csl-left-margin">1. </div><div
@@ -394,34 +350,6 @@ div.csl-indent {
       1256–1262 (2009).</div>
       </div>
       </div>
-      <aside id="footnotes" class="footnotes footnotes-end-of-document"
-      role="doc-endnotes">
-      <hr />
-      <ol>
-      <li id="fn1"><p>Most papers just denote the exit waves as: <span
-      class="math display">\[
-      \hat{\psi}(\mathbf{x}) = P(\mathbf{x} - \mathbf{X}) \cdot
-      \hat{O}(\mathbf{x})
-      \]</span> which assumes knowledge of the whole plane. For
-      practical purposes, the (localized) probe is represented as an
-      array with the same shape as the detector, and we need to cut out
-      a piece of the total object corresponding to the probe position.<a
-      href="#fnref1" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
-      <li id="fn2"><p>In general, any propagator can be used (such as
-      the Fresnel propagator)<a href="#fnref2" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
-      <li id="fn3"><p>In Rodenburg and Faulkner’s words: &gt; “The
-      function favors the inﬂuence of those areas of the specimen which
-      have been strongly illuminated and attenuates the high errors
-      which otherwise arise where the illumination was weak.”<a
-      href="#fnref3" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
-      <li id="fn4"><p>In practice, one can use their computer’s machine
-      epsilon value.<a href="#fnref4" class="footnote-back"
-      role="doc-backlink">↩︎</a></p></li>
-      </ol>
-      </aside>
     </main>
   </div>
 
