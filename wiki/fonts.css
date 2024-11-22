@@ -1,0 +1,107 @@
+/* CMU serif */
+
+@font-face {
+    font-family: 'cmu serif';
+    src: url('fonts/computer-modern/cmu-serif.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu serif';
+    font-weight: 700;
+    src: url('fonts/computer-modern/cmu-serif-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu serif';
+    font-style: italic;
+    src: url('fonts/computer-modern/cmu-serif-italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu serif';
+    font-weight: 700;
+    font-style: italic;
+    src: url('fonts/computer-modern/cmu-serif-bold-italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu bright';
+    src: url('fonts/computer-modern/cmu-bright.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu bright';
+    font-weight: 600;
+    src: url('fonts/computer-modern/cmu-bright-semibold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu bright';
+    font-weight: 700;
+    src: url('fonts/computer-modern/cmu-bright-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu bright';
+    font-style: oblique;
+    src: url('fonts/computer-modern/cmu-bright-oblique.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu bright';
+    font-weight: 600;
+    font-style: oblique;
+    src: url('fonts/computer-modern/cmu-bright-semibold-oblique.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu bright';
+    font-weight: 700;
+    font-style: oblique;
+    src: url('fonts/computer-modern/cmu-bright-bold-oblique.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu typewriter text';
+    src: url('fonts/computer-modern/cmu-typewriter-text.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu typewriter text';
+    font-weight: 700;
+    src: url('fonts/computer-modern/cmu-typewriter-text-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu typewriter text';
+    font-style: italic;
+    src: url('fonts/computer-modern/cmu-typewriter-text-italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'cmu typewriter text';
+    font-weight: 700;
+    font-style: italic;
+    src: url('fonts/computer-modern/cmu-typewriter-text-bold-italic.ttf') format('truetype');
+}
+
+/* Cascadia Mono NF */
+
+@font-face {
+    font-family: 'cascadia mono nf';
+    src: url('fonts/cascadia-code/cascadia-mono-nf.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'cascadia mono nf';
+    src: url('fonts/cascadia-code/cascadia-mono-nf-italic.woff2') format('woff2');
+    font-style: italic;
+    font-feature-settings: "ss01";
+}
+
+/* Mona Sans */
+
+@font-face {
+    font-family: 'mona sans';
+    src: url('fonts/mona/mona-sans.ttf') format('truetype');
+}
