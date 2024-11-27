@@ -1,0 +1,432 @@
+/* ========================================================================== */
+/* Basics                                                                     */
+/* ========================================================================== */
+
+body {
+
+  --border-spacing: 1rem;
+
+  --font-serif: 'cmu serif', 'noto serif cjk kr', serif;
+  --font-sans: 'mona sans', 'noto sans cjk kr', sans-serif;
+  --font-mono: 'cascadia mono nf', 'd2coding', monospace;
+  --font-main: var(--font-serif);
+
+  --font-thin: 100;
+  --font-extralight: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-heavy: 900;
+  
+  --color-red: #e84e75;
+  --color-red-dark: #c33c5e;
+  --color-red-darker: #a32c4d;
+  --color-yellow: #ffd100;
+  --color-yellow-dark: #e6b800;
+  --color-yellow-darker: #cc9c00;
+  --color-mint: #65bba8;
+  --color-mint-dark: #5f9d8b;
+  --color-mint-darker: #5a8f7e;
+  --color-green: #85bb65;
+  --color-green-dark: #6f9d5f;
+  --color-green-darker: #5f8f5a;
+  --color-blue: #636ebb;
+  --color-blue-dark: #5a5f8f;
+  --color-blue-darker: #3b3b6a;
+
+  --color-ayu-dark-text: #b3b1ad;
+  --color-ayu-dark-background: #0f1419;
+  --color-ayu-dark-variable: #f29718;
+  --color-ayu-light-text: #575f66;
+  --color-ayu-light-background: #fafafa;
+  --color-ayu-light-variable: #f29718;
+
+  --color-text: #555;
+  --color-text-muted: #999;
+  --color-selection: #e0e0e0;
+
+  --color-background: #fff;
+
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background-color: var(--color-background);
+
+  overflow-wrap: break-word;  
+}
+
+::selection {
+  background-color: var(--color-selection);
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:target {
+  scroll-margin-top: var(--border-spacing);
+}
+
+/* ========================================================================== */
+/* Template elements                                                          */
+/* ========================================================================== */
+
+.title {
+  padding: var(--border-spacing) var(--border-spacing) 0 var(--border-spacing);
+  margin: 0;
+  font-size: 2rem;
+}
+
+nav {
+  padding: 0 var(--border-spacing);
+  font-size: 1rem;
+  margin: 1rem 0 1rem 0;
+}
+
+nav ul {
+  padding-left: 0;
+  list-style-type: none;
+}
+
+nav li {
+  line-height: 1.75;
+}
+
+nav ul>li>ul {
+  padding-left: 1em;
+}
+
+nav a, nav a:visited, nav a:active {
+  color: var(--color-blue);
+}
+
+nav a:hover {
+  color: var(--color-blue-darker);
+}
+
+.kiwi-wiki-description {
+  padding: 0 var(--border-spacing) var(--border-spacing) var(--border-spacing);
+  font-size: 0.75rem;
+}
+
+.kiwi-wiki-description h2 {
+  margin: 2rem 0 0.25rem 0;
+  font-size: 1.25rem;
+}
+
+.kiwi-wiki-description p {
+  margin-top: 0;
+}
+
+.site-links {
+  display: flex;
+  gap: 1em;
+}
+
+.site-links a,
+.site-links a:visited,
+.site-links a:active {
+  color: var(--color-red);
+}
+
+.site-links a:hover {
+  color: var(--color-red-darker);
+}
+
+main {
+  padding: 0 var(--border-spacing);
+  width: calc(100% - 2 * var(--border-spacing));
+  overflow: auto;
+}
+
+#toc-top {
+  display: none;
+}
+
+.top-marker {
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+}
+
+.top-marker + :is(p, pre, table, ul, ol, blockquote) {
+  margin-top: 0;
+}
+
+@media screen and (min-width: 50rem) {
+
+  body {
+    --border-spacing: 2rem;
+  }
+
+  .title, nav, main, .kiwi-wiki-description {
+    padding: 0
+  }
+
+  .title {
+    padding: var(--border-spacing) var(--border-spacing) 0 var(--border-spacing)
+  }
+
+  nav {
+    padding: 0 var(--border-spacing);
+  }
+
+  main {
+    padding: var(--border-spacing) ;
+    height: calc(100vh - 2 * var(--border-spacing));
+  }
+
+  /* main > * {
+    max-width: 60em;
+  } */
+
+  main > *:first-child {
+    margin-top: 0;
+  }
+
+  main > *:last-child {
+    margin-bottom: 100vh;
+  }
+
+  .kiwi-wiki-description {
+    padding: 0 var(--border-spacing) var(--border-spacing) var(--border-spacing);
+  }
+
+  #toc-top {
+    display: block;
+  }
+}
+
+/* ========================================================================== */
+/* Contents                                                                   */
+/* ========================================================================== */
+
+p {
+  line-height: 1.75em;
+}
+
+
+/* Headings ================================================================== */
+
+/* h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  line-height: 1;
+} */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 1.5em 0 0 0;
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.25rem; }
+h4, h5, h6 { font-size: 1rem; }
+
+:is(h3, h4, h5, h6) + p {
+  margin-top: 0.25rem;
+}
+
+/* Links ===================================================================== */
+
+a,
+a:visited,
+a:active {
+  color: var(--color-mint);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-mint-darker);
+}
+
+a.external::after {
+  font-family: 'cascadia mono nf';
+  content: '';
+  margin: 0 0.25ch;
+}
+
+/* Blockquotes =============================================================== */
+
+blockquote {
+  margin: 1rem 0;
+  padding-left: 1rem;
+
+  font-style: italic;
+
+  color: var(--color-green);
+
+  border-left: 0.1rem solid var(--color-green);
+}
+
+blockquote :is(h1, h2, h3, h4, h5, h6) {
+  font-style: normal;
+  color: var(--color-green-darker);
+}
+
+blockquote .citation {
+  font-style: normal;
+  color: var(--color-green);
+}
+
+blockquote .citation:hover {
+  color: var(--color-green-darker);
+}
+
+blockquote > *:first-child {
+  margin-top: 0;
+}
+
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Lists ===================================================================== */
+
+ul, ol {
+  padding-left: 1em;
+}
+
+li {
+  margin: 0.25em 0 0.25em 0;
+}
+
+ul:first-child, ol:first-child {
+  margin-top: 0;
+}
+
+/* Images ==================================================================== */
+
+figure {
+  margin: 0;
+  padding: 0;
+}
+
+/* Code ====================================================================== */
+
+code {
+  padding: 0.1em 0.25em;
+  margin: 0 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  /* color: var(--color-ayu-light-text); */
+  background-color: var(--color-ayu-light-background);
+  border: 1pt solid #ddd;
+  border-radius: 3pt;
+  font-weight: 350;
+}
+
+pre {
+  white-space: pre-wrap;
+  padding: 0.75em;
+  color: var(--color-ayu-light-text);
+  background-color: #f7f7f7;
+  /* border: 1pt solid #eee; */
+  border-radius: 0.5rem;
+  overflow-x: auto;
+}
+
+pre code {
+  padding: 0;
+  font-size: 0.75em;
+  border: none;
+  background-color: transparent;
+}
+
+@media screen and (min-width: 50rem) {
+  pre {
+    padding: 1em;
+    line-height: 1.75em;
+  }
+  pre code {
+    font-size: 0.9rem;
+  }
+}
+
+/* AYU COLOR SCHEME */
+/* Alert          */ code span.al { color: #f29718; }
+/* Annotation     */ code span.an { color: #d3423e; font-style: italic; }
+/* Attribute      */ code span.at { color: #d3423e; }
+/* BaseN          */ code span.bn { color: #f29718; }
+/* BuiltIn        */ code span.bu { color: #399ee6; }
+/* ControlFlow    */ code span.cf { color: #f29718; }
+/* Char           */ code span.ch { color: #86b300; }
+/* Constant       */ code span.cn { color: #f29718; }
+/* Comment        */ code span.co { color: #abb0b6; font-style: italic; }
+/* CommentVar     */ code span.cv { color: #abb0b6; font-style: italic; }
+/* Documentation  */ code span.do { color: #abb0b6; font-style: italic; }
+/* DataType       */ code span.dt { color: #575f66; }
+/* DecVal         */ code span.dv { color: #f29718; }
+/* Error          */ code span.er { color: #575f66; }
+/* Extension      */ code span.ex { color: #575f66; }
+/* Float          */ code span.fl { color: #f29718; }
+/* Function       */ code span.fu { color: #399ee6; }
+/* Import         */ code span.im { color: #399ee6; }
+/* Information    */ code span.in { color: #abb0b6; font-style: italic; }
+/* Keyword        */ code span.kw { color: #f29718; }
+/* Operator       */ code span.op { color: #575f66; }
+/* Other          */ code span.ot { color: #f29718; }
+/* Preprocessor   */ code span.pp { color: #f29718; }
+/* SpecialChar    */ code span.sc { color: #575f66; }
+/* SpecialString  */ code span.ss { color: #86b300; }
+/* String         */ code span.st { color: #86b300; }
+/* Variable       */ code span.va { color: #d3423e; }
+/* VerbatimString */ code span.vs { color: #86b300; }
+/* Warning        */ code span.wa { color: #abb0b6; font-style: italic; }
+
+/* Math ====================================================================== */
+
+.MathJax {
+  /* display: block; */
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  font-size: 1em !important
+}
+
+/* citations ================================================================= */
+
+.citation {
+  color: var(--color-mint);
+}
+
+.citation:hover {
+  color: var(--color-mint-darker);
+}
+
+.citation a {
+  color: inherit;
+}
+
+.citation a:hover {
+  color: inherit;
+}
+
+.references {
+  font-size: 0.75rem;
+}
+
+.csl-entry {
+  margin-top: 1em;
+  display: flex;
+}
+
+.csl-right-inline {
+  padding: 0;
+  margin-left: 0.5em;
+}
+
+#bibliography {
+  font-size: 1rem;
+}

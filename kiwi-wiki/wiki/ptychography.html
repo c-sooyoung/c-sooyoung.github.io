@@ -5,14 +5,17 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-          <title>kiwi wiki – Ptychography</title>
 
-  <style>
-       </style>
-
-    <link rel="stylesheet" href="/kiwi-wiki/styles/wiki.css" />
-    <link rel="stylesheet" href="/kiwi-wiki/styles/fonts.css" />
   
+  
+  
+  
+  <title>kiwi wiki – Ptychography</title>
+
+  
+
+  <link rel="stylesheet" href="/kiwi-wiki/static/css/wiki.css" />
+
   
     <script
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
@@ -20,522 +23,503 @@
   </head>
 
 <body>
+
   
-  <!--   <header id="title-block-header">
-    <h1 class="title">Ptychography</h1>
-                  </header>
-   -->
+  <h1 class="title">Ptychography</h1>
 
-  <div class="body-flexbox">
-    <header>
-      <div class="article-description">
-        <h1 class="title">Ptychography</h1>
-                <nav id="TOC" role="doc-toc">
-                    <ul>
-                    <li><a href="#top" id="toc-top">(Top)</a></li>
-                    <li><a href="#experimental-setup"
-                    id="toc-experimental-setup">Experimental
-                    setup</a></li>
-                    <li><a href="#basic-mathematical-model"
-                    id="toc-basic-mathematical-model">Basic mathematical
-                    model</a></li>
-                    <li><a href="#reconstruction-algorithms"
-                    id="toc-reconstruction-algorithms">Reconstruction
-                    algorithms</a>
-                    <ul>
-                    <li><a href="#inverse-solvers"
-                    id="toc-inverse-solvers">Inverse solvers</a></li>
-                    <li><a href="#relaxing-assumptions"
-                    id="toc-relaxing-assumptions">Relaxing
-                    assumptions</a></li>
-                    </ul></li>
-                    <li><a href="#bibliography"
-                    id="toc-bibliography">References</a></li>
-                    </ul>
-        </nav>
-              </div>
-      <div class="kiwi-wiki-description">
-        <h2>kiwi wiki</h2>
-        <p>
-          A wiki / archive / library / blog of my interests.<br />
-          Not technically a wiki, but the name fit well with kiwi.
-        </p>
-        <span class="site-links">
-          <a href="/kiwi-wiki">index</a>
-          <a href="/">homepage</a>
-          <a href="https://github.com/c-sooyoung">github</a>
-        </span>
-      </div>
-    </header>
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#top" id="toc-top">(Top)</a></li>
+        <li><a href="#experimental-setup"
+        id="toc-experimental-setup">Experimental setup</a></li>
+        <li><a href="#basic-mathematical-model"
+        id="toc-basic-mathematical-model">Basic mathematical
+        model</a></li>
+        <li><a href="#reconstruction-algorithms"
+        id="toc-reconstruction-algorithms">Reconstruction algorithms</a>
+        <ul>
+        <li><a href="#inverse-solvers" id="toc-inverse-solvers">Inverse
+        solvers</a></li>
+        <li><a href="#relaxing-assumptions"
+        id="toc-relaxing-assumptions">Relaxing assumptions</a></li>
+        </ul></li>
+        <li><a href="#bibliography"
+        id="toc-bibliography">References</a></li>
+        </ul>
+  </nav>
+  
+  <main>
+    <h3 class="top-marker" id="top">(Top)</h3>
+    <p><strong>Ptychography</strong> is an computational imaging
+    technique built on methods from scanning transmission electron/X-ray
+    microscopy (STE/XM) and coherent diffraction imaging (CDI) <span
+    class="citation"
+    data-cites="rodenburgPtychography2019 pfeifferXrayPtychography2018">(<a
+    href="#ref-rodenburgPtychography2019" role="doc-biblioref">1</a>,<a
+    href="#ref-pfeifferXrayPtychography2018"
+    role="doc-biblioref">2</a>)</span>. A ptychography experiment
+    records multiple interference patterns from overlapping
+    illuminations of a sample, and solves the phase problem to
+    reconstruct a complex image of the sample. Ptychography has proven
+    experimentally successful with both X-rays <span class="citation"
+    data-cites="thibaultHighResolutionScanningXray2008 rodenburgHardXRayLenslessImaging2007 tsaiXrayPtychographyExtended2016">(<a
+    href="#ref-thibaultHighResolutionScanningXray2008"
+    role="doc-biblioref">3</a>–<a
+    href="#ref-tsaiXrayPtychographyExtended2016"
+    role="doc-biblioref">5</a>)</span> and electrons <span
+    class="citation"
+    data-cites="jiangElectronPtychography2D2018 chenElectronPtychographyAchieves2021 nguyenAchievingSub05angstromresolutionPtychography2024">(<a
+    href="#ref-jiangElectronPtychography2D2018"
+    role="doc-biblioref">6</a>–<a
+    href="#ref-nguyenAchievingSub05angstromresolutionPtychography2024"
+    role="doc-biblioref">8</a>)</span>, achieving record-breaking
+    resolutions.</p>
+    <p>Implementations of ptychography may vary considerably in the
+    choice of <a href="#inverse-solvers"
+    title="§Inverse solvers">inverse solver algorithms</a> and the
+    methods they use to achieve stronger <a href="#relaxing-assumptions"
+    title="§Relaxing assumptions">experimental robustness</a>. However,
+    they all share the common notion of overlapping illuminations by
+    known probe positions.</p>
+    <h2 id="experimental-setup">Experimental setup</h2>
+    <blockquote>
+    <figure>
+    <img src="assets/ptychography/20241125_173252.png" title="wikilink"
+    width="300" alt="300" />
+    </figure>
+    <p><strong>Schematic of defocused probe electron
+    ptychography.</strong><br />
+    <strong>a</strong> Experimental setup. The focus of the electron
+    probe is downstream from the sample at a distance defined by the
+    defocus value. The diffraction pattern on the detector (EMPAD) shows
+    a shadow image in the bright-field disk. <strong>b</strong> A
+    diagram of the scan procedure. <strong>c</strong> Three diffraction
+    patterns simulated when the probe is illuminated at the positions
+    circled in <strong>b</strong>, which show the shadow images in the
+    bright-field disk shifting accordingly with the probe position. The
+    speckles in the dark-field region contain high frequency
+    information.</p>
+    <p>figure from <span class="citation"
+    data-cites="chenMixedstateElectronPtychography2020">(<a
+    href="#ref-chenMixedstateElectronPtychography2020"
+    role="doc-biblioref">9</a>)</span>.</p>
+    </blockquote>
+    <p>A basic ptychographic experiment consists of a a focused beam
+    (probe) scanned across a sample of interest. As in the schematic
+    above, the probe illuminates a portion of the sample, which is
+    propagated to a pixel array detector where a macroscopic
+    interference pattern is recorded. In this sense, ptychography
+    closely resembles (and is often called a form of) CDI.</p>
+    <p>However, an important distinction is that ptychography does not
+    require the usual oversampling condition fundamental to CDI <span
+    class="citation" data-cites="rodenburgPtychography2019">(<a
+    href="#ref-rodenburgPtychography2019"
+    role="doc-biblioref">1</a>)</span>. Instead, ptychography requires
+    that the probe shifts laterally to illuminate another overlapping
+    portion of the sample. These overlapping “views” and their
+    corresponding interference patterns make a 4D dataset, a method
+    familiar to 4D-STEM <span class="citation"
+    data-cites="ophusFourDimensionalScanningTransmission2019">(<a
+    href="#ref-ophusFourDimensionalScanningTransmission2019"
+    role="doc-biblioref">10</a>)</span>.</p>
+    <p>The final (and arguably the most important) step is to recover
+    the phase part of the interference patterns and reconstruct the
+    sample. This is done computationally, with many algorithms being
+    adopted from conventional phase retrieval in CDI to accomodate for
+    the probe shifts. Recent successes in ptychography have used
+    iterative algorithms, while also developing methods for robustness
+    against experimental error and faster convergence <span
+    class="citation" data-cites="rodenburgPtychography2019">(<a
+    href="#ref-rodenburgPtychography2019"
+    role="doc-biblioref">1</a>)</span>.</p>
+    <h2 id="basic-mathematical-model">Basic mathematical model</h2>
+    <blockquote>
+    <h4 id="notation">Notation</h4>
+    <ul>
+    <li><strong>Coordinates</strong>
+    <ul>
+    <li>Real-space coordinates: <span
+    class="math inline">\(\mathbf{x}\)</span></li>
+    <li>Reciprocal-space coordinates: <span
+    class="math inline">\(\mathbf{k}\)</span></li>
+    </ul></li>
+    <li><strong>Reconstruction</strong>
+    <ul>
+    <li>The “object” (sample): <span
+    class="math inline">\(O\)</span></li>
+    <li>The “probe”: <span class="math inline">\(P\)</span></li>
+    <li>The reconstructions are denoted with a carat: <span
+    class="math inline">\(\hat{O}\)</span>, <span
+    class="math inline">\(\hat{P}\)</span></li>
+    <li>The <span class="math inline">\(n\)</span>th iteration is in
+    parentheses: <span class="math inline">\(\hat{O}^{(n)}\)</span>,
+    <span class="math inline">\(\hat{P}^{(n)}\)</span></li>
+    <li>The scan positions are indexed with <span
+    class="math inline">\(j\)</span>: <span
+    class="math inline">\(\mathbf{X}_j\)</span></li>
+    <li>The exit waves: <span
+    class="math inline">\(\psi_j(\mathbf{x})\)</span></li>
+    <li>The measured intensities: <span
+    class="math inline">\(I_j(\mathbf{k})\)</span></li>
+    </ul></li>
+    </ul>
+    </blockquote>
+    <p>To build a reconstruction algorithm, we must have a mathematical
+    model of the experiment. The core of ptychography can be summarised
+    as:</p>
+    <ol type="1">
+    <li>The decomposition of the exit wave <span
+    class="math inline">\(\psi\)</span> as a product of the object <span
+    class="math inline">\(O\)</span> and a focused probe <span
+    class="math inline">\(P\)</span>.</li>
+    <li>The lateral shifts <span
+    class="math inline">\(\mathrm{X}_j\)</span> between the object <span
+    class="math inline">\(O\)</span> and probe <span
+    class="math inline">\(P\)</span>.</li>
+    </ol>
+    <p>Expressed as an equation, these conditions say:</p>
+    <p><span class="math display">\[
+    \psi_j(\mathbf{x}) = O(\mathbf{x}) \cdot P(\mathbf{x} -
+    \mathbf{X}_j)
+    \]</span></p>
+    <p>The exit waves propagate to the detector plane, where the
+    interference patterns are recorded but the phase is lost. Assuming
+    Fraunhofer diffraction, this is the modulus squared of its Fourier
+    transform.</p>
+    <p><span class="math display">\[
+    I_j(\mathbf{k}) = |\tilde{\psi}_j(\mathbf{k})|^2 = | \mathcal{F}
+    [\psi_j(\mathbf{x})] |^2
+    \]</span></p>
+    <p>These two equations roughly represent the constraints that let us
+    solve the phase problem; each in the real domain and reciprocal
+    domain respectively.</p>
+    <h2 id="reconstruction-algorithms">Reconstruction algorithms</h2>
+    <p>Modelling the forward propagation is simple; however, going
+    backwards is tricky. This is an inverse problem, where one wants to
+    recover the object function <span class="math inline">\(\hat
+    O\)</span> constrained by the known interference measurements <span
+    class="math inline">\(I_j\)</span> and scan positions <span
+    class="math inline">\(\mathbf{X}_j\)</span>. Perhaps surprisingly,
+    the real space constraint of shifting illuminations provides enough
+    information for the solution to be well-behaved <span
+    class="citation" data-cites="rodenburgPtychography2019">(<a
+    href="#ref-rodenburgPtychography2019"
+    role="doc-biblioref">1</a>)</span>. Here I will restate a brief
+    history and survey of ptychography algorithms given by Rodenburg and
+    Maiden in <span class="citation"
+    data-cites="rodenburgPtychography2019">(<a
+    href="#ref-rodenburgPtychography2019"
+    role="doc-biblioref">1</a>)</span>. Detailed explanation with code
+    examples can (hopefully, in the future) be found by following the
+    links.</p>
+    <h3 id="inverse-solvers">Inverse solvers</h3>
+    <p>The first type (called Class 1 by Rodenburg and Maiden) of
+    algorithms are those that directly solve for the phases. Originally,
+    ptychography was coined in 1970 by Hergel and Hoppe <span
+    class="citation"
+    data-cites="hegerlDynamischeTheorieKristallstrukturanalyse1970">(<a
+    href="#ref-hegerlDynamischeTheorieKristallstrukturanalyse1970"
+    role="doc-biblioref">11</a>)</span>, where they introduced a method
+    of phase retrieval by exploiting the excess information in
+    overlapping Bragg disks of a crystal diffraction experiment.
+    However, this has little to do with modern ptychography, which uses
+    overlap in real space instead. This line of reasoning started with
+    Bates and Rodenburg <span class="citation"
+    data-cites="batesSubangstromTransmissionMicroscopy1989 rodenburgTheorySuperResolutionElectron1992">(<a
+    href="#ref-batesSubangstromTransmissionMicroscopy1989"
+    role="doc-biblioref">12</a>,<a
+    href="#ref-rodenburgTheorySuperResolutionElectron1992"
+    role="doc-biblioref">13</a>)</span> by attempting an analytic
+    solution, called Wigner Distribution Deconvolution (WDD).</p>
+    <p>Beginning with the <a
+    href="ptychographic-iterative-engine-(pie).html"
+    title="Ptychographic Iterative Engine (PIE)">Ptychographic Iterative
+    Engine (PIE)</a> algorithm by Rodenburg and Faulkner <span
+    class="citation"
+    data-cites="rodenburgPhaseRetrievalAlgorithm2004">(<a
+    href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
+    role="doc-biblioref">14</a>)</span>, iterative methods for
+    ptychography started gaining popularity. PIE is a natural extension
+    of conventional CDI phase retrieval algorithms that solve for a
+    ptychographic dataset, where the additional constraint of overlap
+    was suggested to improve convergence.</p>
+    <p>After PIE, Guizar-Sicairos and Fienup developed a Conjugate
+    Gradient Descent (CGD) method <span class="citation"
+    data-cites="guizar-sicairosPhaseRetrievalTransverse2008">(<a
+    href="#ref-guizar-sicairosPhaseRetrievalTransverse2008"
+    role="doc-biblioref">15</a>)</span>, that solves globally rather
+    than piecewise like PIE. Another independent method was introduced
+    by Thibault et al. based on set projection, the Difference Map (DM)
+    <span class="citation"
+    data-cites="thibaultProbeRetrievalPtychographic2009">(<a
+    href="#ref-thibaultProbeRetrievalPtychographic2009"
+    role="doc-biblioref">16</a>)</span>. CGD and DM allowed the
+    simultaneous reconstruction of the object and probe, an important
+    feature of modern ptychography algorithms and one that improves
+    experimental robustness significantly. PIE was improved to solve for
+    the probe as well <span class="citation"
+    data-cites="maidenImprovedPtychographicalPhase2009">(<a
+    href="#ref-maidenImprovedPtychographicalPhase2009"
+    role="doc-biblioref">17</a>)</span>.</p>
+    <h3 id="relaxing-assumptions">Relaxing assumptions</h3>
+    <p>Robustness against experimental noise, which weakens the
+    fundamental assumptions of ptychography is also as important (if not
+    more) as the inversion algorithms. The following algorithms (Class
+    2) are those that relax these assumptions, which allow ptychography
+    to be experimentally viable.</p>
+    <p>The simplest of these is to account for random noise. Perhaps
+    hinted by CGD, ptychography can be reformulated as an optimization
+    scheme. It should come as no surprise that a statistical noise model
+    can be incorporated by using Maximum Likelihood Estimation (MLE),
+    shown by Thibault and Guizar-Sicairos <span class="citation"
+    data-cites="thibaultMaximumlikelihoodRefinementCoherent2012">(<a
+    href="#ref-thibaultMaximumlikelihoodRefinementCoherent2012"
+    role="doc-biblioref">18</a>)</span>. MLE can be computationally
+    expensive, however, so PIE or DM can first efficiently sweep the
+    solution space to find probable regions, while MLE can refine the
+    solution.</p>
+    <p>One improvement that radically improved the quality of
+    reconstruction was the introduction of mixed state ptychography by
+    Thibault and Menzel <span class="citation"
+    data-cites="thibaultReconstructingStateMixtures2013">(<a
+    href="#ref-thibaultReconstructingStateMixtures2013"
+    role="doc-biblioref">19</a>)</span>, which relaxes the fundamental
+    assumption of coherence. Introducing mixed states of the probe and
+    object via density matrices, they were able to connect ptychography
+    to quantum tomography. Allowing the beam to be partially coherent
+    can permit much more various and brighter sources of light/electrons
+    to be used.</p>
+    <p>The multiplicative assumption in real space, and the assumption
+    of known scan positions have also been relaxed by various methods.
+    The former can be tackled by effectively propagating the beam
+    through the sample with multi-slice ptychography <span
+    class="citation" data-cites="tsaiXrayPtychographyExtended2016">(<a
+    href="#ref-tsaiXrayPtychographyExtended2016"
+    role="doc-biblioref">5</a>)</span>, effectively achieving volumetric
+    imaging. Probe position refinement <span class="citation"
+    data-cites="dwivediLateralPositionCorrection2018 odstrcilIterativeLeastsquaresSolver2018">(<a
+    href="#ref-dwivediLateralPositionCorrection2018"
+    role="doc-biblioref">20</a>,<a
+    href="#ref-odstrcilIterativeLeastsquaresSolver2018"
+    role="doc-biblioref">21</a>)</span> can be done through various
+    optimization schemes.</p>
+    <h2 class="unnumbered" id="bibliography">References</h2>
+    <div id="refs" class="references csl-bib-body"
+    data-entry-spacing="0" data-line-spacing="2" role="list">
+    <div id="ref-rodenburgPtychography2019" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">1. </div><div
+    class="csl-right-inline">Rodenburg, J. &amp; Maiden, A. in
+    <em>Springer <span>Handbook</span> of <span>Microscopy</span></em>
+    (eds. Hawkes, P. W. &amp; Spence, J. C. H.) 819–904 (Springer
+    International Publishing, 2019).</div>
+    </div>
+    <div id="ref-pfeifferXrayPtychography2018" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">2. </div><div
+    class="csl-right-inline">Pfeiffer, F. <a
+    href="https://doi.org/10.1038/s41566-017-0072-5" class="external"
+    target="_blank">X-ray ptychography</a>. <em>Nature Photonics</em>
+    <strong>12,</strong> 9–17 (2018).</div>
+    </div>
+    <div id="ref-thibaultHighResolutionScanningXray2008"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">3. </div><div
+    class="csl-right-inline">Thibault, P. <em>et al.</em> <a
+    href="https://doi.org/10.1126/science.1158573" class="external"
+    target="_blank">High-<span class="nocase">Resolution Scanning X-ray
+    Diffraction Microscopy</span></a>. <em>Science</em>
+    <strong>321,</strong> 379–382 (2008).</div>
+    </div>
+    <div id="ref-rodenburgHardXRayLenslessImaging2007" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">4. </div><div
+    class="csl-right-inline">Rodenburg, J. M. <em>et al.</em> <a
+    href="https://doi.org/10.1103/PhysRevLett.98.034801"
+    class="external" target="_blank">Hard-<span>X-Ray Lensless
+    Imaging</span> of <span>Extended Objects</span></a>. <em>Physical
+    Review Letters</em> <strong>98,</strong> 034801 (2007).</div>
+    </div>
+    <div id="ref-tsaiXrayPtychographyExtended2016" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">5. </div><div
+    class="csl-right-inline">Tsai, E. H. R., Usov, I., Diaz, A., Menzel,
+    A. &amp; Guizar-Sicairos, M. <a
+    href="https://doi.org/10.1364/OE.24.029089" class="external"
+    target="_blank">X-ray ptychography with extended depth of field</a>.
+    <em>Optics Express</em> <strong>24,</strong> 29089 (2016).</div>
+    </div>
+    <div id="ref-jiangElectronPtychography2D2018" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">6. </div><div
+    class="csl-right-inline">Jiang, Y. <em>et al.</em> <a
+    href="https://doi.org/10.1038/s41586-018-0298-5" class="external"
+    target="_blank">Electron ptychography of <span>2D</span> materials
+    to deep sub-<span>Å</span>ngstr<span>ö</span>m resolution</a>.
+    <em>Nature</em> <strong>559,</strong> 343–349 (2018).</div>
+    </div>
+    <div id="ref-chenElectronPtychographyAchieves2021" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">7. </div><div
+    class="csl-right-inline">Chen, Z. <em>et al.</em> <a
+    href="https://doi.org/10.1126/science.abg2533" class="external"
+    target="_blank">Electron ptychography achieves atomic-resolution
+    limits set by lattice vibrations</a>. <em>Science</em>
+    <strong>372,</strong> 826–831 (2021).</div>
+    </div>
+    <div id="ref-nguyenAchievingSub05angstromresolutionPtychography2024"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">8. </div><div
+    class="csl-right-inline">Nguyen, K. X. <em>et al.</em> <a
+    href="https://doi.org/10.1126/science.adl2029" class="external"
+    target="_blank">Achieving sub-0.5-angstrom–resolution ptychography
+    in an uncorrected electron microscope</a>. <em>Science</em>
+    <strong>383,</strong> 865–870 (2024).</div>
+    </div>
+    <div id="ref-chenMixedstateElectronPtychography2020"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">9. </div><div
+    class="csl-right-inline">Chen, Z. <em>et al.</em> <a
+    href="https://doi.org/10.1038/s41467-020-16688-6" class="external"
+    target="_blank">Mixed-state electron ptychography enables
+    sub-angstrom resolution imaging with picometer precision at low
+    dose</a>. <em>Nature Communications</em> <strong>11,</strong> 2994
+    (2020).</div>
+    </div>
+    <div id="ref-ophusFourDimensionalScanningTransmission2019"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">10. </div><div
+    class="csl-right-inline">Ophus, C. <a
+    href="https://doi.org/10.1017/S1431927619000497" class="external"
+    target="_blank">Four-<span>Dimensional Scanning Transmission
+    Electron Microscopy</span> (<span>4D-STEM</span>): <span>From
+    Scanning Nanodiffraction</span> to <span>Ptychography</span> and
+    <span>Beyond</span></a>. <em>Microscopy and Microanalysis</em>
+    <strong>25,</strong> 563–582 (2019).</div>
+    </div>
+    <div id="ref-hegerlDynamischeTheorieKristallstrukturanalyse1970"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">11. </div><div
+    class="csl-right-inline">Hegerl, R. &amp; Hoppe, W. <a
+    href="https://doi.org/10.1002/bbpc.19700741112" class="external"
+    target="_blank">Dynamische <span>Theorie</span> der
+    <span>Kristallstrukturanalyse</span> durch
+    <span>Elektronenbeugung</span> im inhomogenen <span
+    class="nocase">Prim<span
+    class="nocase">ä</span>rstrahlwellenfeld</span></a>. <em>Berichte
+    der Bunsengesellschaft f<span>ü</span>r physikalische Chemie</em>
+    <strong>74,</strong> 1148–1154 (1970).</div>
+    </div>
+    <div id="ref-batesSubangstromTransmissionMicroscopy1989"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">12. </div><div
+    class="csl-right-inline">Bates, R. H. T. &amp; Rodenburg, J. M. <a
+    href="https://doi.org/10.1016/0304-3991(89)90052-1" class="external"
+    target="_blank">Sub-<span>Å</span>ngstr<span>ö</span>m transmission
+    microscopy: <span>A</span> fourier transform algorithm for
+    microdiffraction plane intensity information</a>.
+    <em>Ultramicroscopy</em> <strong>31,</strong> 303–307 (1989).</div>
+    </div>
+    <div id="ref-rodenburgTheorySuperResolutionElectron1992"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">13. </div><div
+    class="csl-right-inline">Rodenburg, J. M. &amp; Bates, R. H. T. <a
+    href="https://www.jstor.org/stable/53996" class="external"
+    target="_blank">The <span>Theory</span> of <span>Super-Resolution
+    Electron Microscopy Via Wigner-Distribution
+    Deconvolution</span></a>. <em>Philosophical Transactions: Physical
+    Sciences and Engineering</em> <strong>339,</strong> 521–553
+    (1992).</div>
+    </div>
+    <div id="ref-rodenburgPhaseRetrievalAlgorithm2004" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">14. </div><div
+    class="csl-right-inline">Rodenburg, J. M. &amp; Faulkner, H. M. L.
+    <a href="https://doi.org/10.1063/1.1823034" class="external"
+    target="_blank">A phase retrieval algorithm for shifting
+    illumination</a>. <em>Applied Physics Letters</em>
+    <strong>85,</strong> 4795–4797 (2004).</div>
+    </div>
+    <div id="ref-guizar-sicairosPhaseRetrievalTransverse2008"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">15. </div><div
+    class="csl-right-inline">Guizar-Sicairos, M. &amp; Fienup, J. R. <a
+    href="https://doi.org/10.1364/OE.16.007264" class="external"
+    target="_blank">Phase retrieval with transverse translation
+    diversity: A nonlinear optimization approach</a>. <em>Optics
+    Express</em> <strong>16,</strong> 7264–7278 (2008).</div>
+    </div>
+    <div id="ref-thibaultProbeRetrievalPtychographic2009"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">16. </div><div
+    class="csl-right-inline">Thibault, P., Dierolf, M., Bunk, O.,
+    Menzel, A. &amp; Pfeiffer, F. <a
+    href="https://doi.org/10.1016/j.ultramic.2008.12.011"
+    class="external" target="_blank">Probe retrieval in ptychographic
+    coherent diffractive imaging</a>. <em>Ultramicroscopy</em>
+    <strong>109,</strong> 338–343 (2009).</div>
+    </div>
+    <div id="ref-maidenImprovedPtychographicalPhase2009"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">17. </div><div
+    class="csl-right-inline">Maiden, A. M. &amp; Rodenburg, J. M. <a
+    href="https://doi.org/10.1016/j.ultramic.2009.05.012"
+    class="external" target="_blank">An improved ptychographical phase
+    retrieval algorithm for diffractive imaging</a>.
+    <em>Ultramicroscopy</em> <strong>109,</strong> 1256–1262
+    (2009).</div>
+    </div>
+    <div id="ref-thibaultMaximumlikelihoodRefinementCoherent2012"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">18. </div><div
+    class="csl-right-inline">Thibault, P. &amp; Guizar-Sicairos, M. <a
+    href="https://doi.org/10.1088/1367-2630/14/6/063004"
+    class="external" target="_blank">Maximum-likelihood refinement for
+    coherent diffractive imaging</a>. <em>New Journal of Physics</em>
+    <strong>14,</strong> 063004 (2012).</div>
+    </div>
+    <div id="ref-thibaultReconstructingStateMixtures2013"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">19. </div><div
+    class="csl-right-inline">Thibault, P. &amp; Menzel, A. <a
+    href="https://doi.org/10.1038/nature11806" class="external"
+    target="_blank">Reconstructing state mixtures from diffraction
+    measurements</a>. <em>Nature</em> <strong>494,</strong> 68–71
+    (2013).</div>
+    </div>
+    <div id="ref-dwivediLateralPositionCorrection2018" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">20. </div><div
+    class="csl-right-inline">Dwivedi, P., Konijnenberg, A. P., Pereira,
+    S. F. &amp; Urbach, H. P. <a
+    href="https://doi.org/10.1016/j.ultramic.2018.04.004"
+    class="external" target="_blank">Lateral position correction in
+    ptychography using the gradient of intensity patterns</a>.
+    <em>Ultramicroscopy</em> <strong>192,</strong> 29–36 (2018).</div>
+    </div>
+    <div id="ref-odstrcilIterativeLeastsquaresSolver2018"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">21. </div><div
+    class="csl-right-inline">Odstrčil, M., Menzel, A. &amp;
+    Guizar-Sicairos, M. <a href="https://doi.org/10.1364/OE.26.003108"
+    class="external" target="_blank">Iterative least-squares solver for
+    generalized maximum-likelihood ptychography</a>. <em>Optics
+    Express</em> <strong>26,</strong> 3108–3123 (2018).</div>
+    </div>
+    </div>
+  </main>
 
-    <main>
-      <h2 class="top-marker" id="top">(Top)</h2>
-      <p><strong>Ptychography</strong> is an computational imaging
-      technique built on methods from scanning transmission
-      electron/X-ray microscopy (STE/XM) and coherent diffraction
-      imaging (CDI) <span class="citation"
-      data-cites="rodenburgPtychography2019 pfeifferXrayPtychography2018">(<a
-      href="#ref-rodenburgPtychography2019"
-      role="doc-biblioref">1</a>,<a
-      href="#ref-pfeifferXrayPtychography2018"
-      role="doc-biblioref">2</a>)</span>. A ptychography experiment
-      records multiple interference patterns from overlapping
-      illuminations of a sample, and solves the phase problem to
-      reconstruct a complex image of the sample. Ptychography has proven
-      experimentally successful with both X-rays <span class="citation"
-      data-cites="thibaultHighResolutionScanningXray2008 rodenburgHardXRayLenslessImaging2007 tsaiXrayPtychographyExtended2016">(<a
-      href="#ref-thibaultHighResolutionScanningXray2008"
-      role="doc-biblioref">3</a>–<a
-      href="#ref-tsaiXrayPtychographyExtended2016"
-      role="doc-biblioref">5</a>)</span> and electrons <span
-      class="citation"
-      data-cites="jiangElectronPtychography2D2018 chenElectronPtychographyAchieves2021 nguyenAchievingSub05angstromresolutionPtychography2024">(<a
-      href="#ref-jiangElectronPtychography2D2018"
-      role="doc-biblioref">6</a>–<a
-      href="#ref-nguyenAchievingSub05angstromresolutionPtychography2024"
-      role="doc-biblioref">8</a>)</span>, achieving record-breaking
-      resolutions.</p>
-      <p>Implementations of ptychography may vary considerably in the
-      choice of <a href="#inverse-solvers"
-      title="§Inverse solvers">inverse solver algorithms</a> and the
-      methods they use to achieve stronger <a
-      href="#relaxing-assumptions"
-      title="§Relaxing assumptions">experimental robustness</a>.
-      However, they all share the common notion of overlapping
-      illuminations by known probe positions.</p>
-      <h2 id="experimental-setup">Experimental setup</h2>
-      <blockquote>
-      <figure>
-      <img src="assets/ptychography/20241125_173252.png"
-      title="wikilink" width="300" alt="300" />
-      </figure>
-      <p><strong>Schematic of defocused probe electron
-      ptychography.</strong><br />
-      <strong>a</strong> Experimental setup. The focus of the electron
-      probe is downstream from the sample at a distance defined by the
-      defocus value. The diffraction pattern on the detector (EMPAD)
-      shows a shadow image in the bright-field disk. <strong>b</strong>
-      A diagram of the scan procedure. <strong>c</strong> Three
-      diffraction patterns simulated when the probe is illuminated at
-      the positions circled in <strong>b</strong>, which show the shadow
-      images in the bright-field disk shifting accordingly with the
-      probe position. The speckles in the dark-field region contain high
-      frequency information.</p>
-      <p>figure from <span class="citation"
-      data-cites="chenMixedstateElectronPtychography2020">(<a
-      href="#ref-chenMixedstateElectronPtychography2020"
-      role="doc-biblioref">9</a>)</span>.</p>
-      </blockquote>
-      <p>A basic ptychographic experiment consists of a a focused beam
-      (probe) scanned across a sample of interest. As in the schematic
-      above, the probe illuminates a portion of the sample, which is
-      propagated to a pixel array detector where a macroscopic
-      interference pattern is recorded. In this sense, ptychography
-      closely resembles (and is often called a form of) CDI.</p>
-      <p>However, an important distinction is that ptychography does not
-      require the usual oversampling condition fundamental to CDI <span
-      class="citation" data-cites="rodenburgPtychography2019">(<a
-      href="#ref-rodenburgPtychography2019"
-      role="doc-biblioref">1</a>)</span>. Instead, ptychography requires
-      that the probe shifts laterally to illuminate another overlapping
-      portion of the sample. These overlapping “views” and their
-      corresponding interference patterns make a 4D dataset, a method
-      familiar to 4D-STEM <span class="citation"
-      data-cites="ophusFourDimensionalScanningTransmission2019">(<a
-      href="#ref-ophusFourDimensionalScanningTransmission2019"
-      role="doc-biblioref">10</a>)</span>.</p>
-      <p>The final (and arguably the most important) step is to recover
-      the phase part of the interference patterns and reconstruct the
-      sample. This is done computationally, with many algorithms being
-      adopted from conventional phase retrieval in CDI to accomodate for
-      the probe shifts. Recent successes in ptychography have used
-      iterative algorithms, while also developing methods for robustness
-      against experimental error and faster convergence <span
-      class="citation" data-cites="rodenburgPtychography2019">(<a
-      href="#ref-rodenburgPtychography2019"
-      role="doc-biblioref">1</a>)</span>.</p>
-      <h2 id="basic-mathematical-model">Basic mathematical model</h2>
-      <blockquote>
-      <h4 id="notation">Notation</h4>
-      <ul>
-      <li><strong>Coordinates</strong>
-      <ul>
-      <li>Real-space coordinates: <span
-      class="math inline">\(\mathbf{x}\)</span></li>
-      <li>Reciprocal-space coordinates: <span
-      class="math inline">\(\mathbf{k}\)</span></li>
-      </ul></li>
-      <li><strong>Reconstruction</strong>
-      <ul>
-      <li>The “object” (sample): <span
-      class="math inline">\(O\)</span></li>
-      <li>The “probe”: <span class="math inline">\(P\)</span></li>
-      <li>The reconstructions are denoted with a carat: <span
-      class="math inline">\(\hat{O}\)</span>, <span
-      class="math inline">\(\hat{P}\)</span></li>
-      <li>The <span class="math inline">\(n\)</span>th iteration is in
-      parentheses: <span class="math inline">\(\hat{O}^{(n)}\)</span>,
-      <span class="math inline">\(\hat{P}^{(n)}\)</span></li>
-      <li>The scan positions are indexed with <span
-      class="math inline">\(j\)</span>: <span
-      class="math inline">\(\mathbf{X}_j\)</span></li>
-      <li>The exit waves: <span
-      class="math inline">\(\psi_j(\mathbf{x})\)</span></li>
-      <li>The measured intensities: <span
-      class="math inline">\(I_j(\mathbf{k})\)</span></li>
-      </ul></li>
-      </ul>
-      </blockquote>
-      <p>To build a reconstruction algorithm, we must have a
-      mathematical model of the experiment. The core of ptychography can
-      be summarised as:</p>
-      <ol type="1">
-      <li>The decomposition of the exit wave <span
-      class="math inline">\(\psi\)</span> as a product of the object
-      <span class="math inline">\(O\)</span> and a focused probe <span
-      class="math inline">\(P\)</span>.</li>
-      <li>The lateral shifts <span
-      class="math inline">\(\mathrm{X}_j\)</span> between the object
-      <span class="math inline">\(O\)</span> and probe <span
-      class="math inline">\(P\)</span>.</li>
-      </ol>
-      <p>Expressed as an equation, these conditions say:</p>
-      <p><span class="math display">\[
-      \psi_j(\mathbf{x}) = O(\mathbf{x}) \cdot P(\mathbf{x} -
-      \mathbf{X}_j)
-      \]</span></p>
-      <p>The exit waves propagate to the detector plane, where the
-      interference patterns are recorded but the phase is lost. Assuming
-      Fraunhofer diffraction, this is the modulus squared of its Fourier
-      transform.</p>
-      <p><span class="math display">\[
-      I_j(\mathbf{k}) = |\tilde{\psi}_j(\mathbf{k})|^2 = | \mathcal{F}
-      [\psi_j(\mathbf{x})] |^2
-      \]</span></p>
-      <p>These two equations roughly represent the constraints that let
-      us solve the phase problem; each in the real domain and reciprocal
-      domain respectively.</p>
-      <h2 id="reconstruction-algorithms">Reconstruction algorithms</h2>
-      <p>Modelling the forward propagation is simple; however, going
-      backwards is tricky. This is an inverse problem, where one wants
-      to recover the object function <span class="math inline">\(\hat
-      O\)</span> constrained by the known interference measurements
-      <span class="math inline">\(I_j\)</span> and scan positions <span
-      class="math inline">\(\mathbf{X}_j\)</span>. Perhaps surprisingly,
-      the real space constraint of shifting illuminations provides
-      enough information for the solution to be well-behaved <span
-      class="citation" data-cites="rodenburgPtychography2019">(<a
-      href="#ref-rodenburgPtychography2019"
-      role="doc-biblioref">1</a>)</span>. Here I will restate a brief
-      history and survey of ptychography algorithms given by Rodenburg
-      and Maiden in <span class="citation"
-      data-cites="rodenburgPtychography2019">(<a
-      href="#ref-rodenburgPtychography2019"
-      role="doc-biblioref">1</a>)</span>. Detailed explanation with code
-      examples can (hopefully, in the future) be found by following the
-      links.</p>
-      <h3 id="inverse-solvers">Inverse solvers</h3>
-      <p>The first type (called Class 1 by Rodenburg and Maiden) of
-      algorithms are those that directly solve for the phases.
-      Originally, ptychography was coined in 1970 by Hergel and Hoppe
-      <span class="citation"
-      data-cites="hegerlDynamischeTheorieKristallstrukturanalyse1970">(<a
-      href="#ref-hegerlDynamischeTheorieKristallstrukturanalyse1970"
-      role="doc-biblioref">11</a>)</span>, where they introduced a
-      method of phase retrieval by exploiting the excess information in
-      overlapping Bragg disks of a crystal diffraction experiment.
-      However, this has little to do with modern ptychography, which
-      uses overlap in real space instead. This line of reasoning started
-      with Bates and Rodenburg <span class="citation"
-      data-cites="batesSubangstromTransmissionMicroscopy1989 rodenburgTheorySuperResolutionElectron1992">(<a
-      href="#ref-batesSubangstromTransmissionMicroscopy1989"
-      role="doc-biblioref">12</a>,<a
-      href="#ref-rodenburgTheorySuperResolutionElectron1992"
-      role="doc-biblioref">13</a>)</span> by attempting an analytic
-      solution, called Wigner Distribution Deconvolution (WDD).</p>
-      <p>Beginning with the <a
-      href="ptychographic-iterative-engine-(pie).html"
-      title="Ptychographic Iterative Engine (PIE)">Ptychographic
-      Iterative Engine (PIE)</a> algorithm by Rodenburg and Faulkner
-      <span class="citation"
-      data-cites="rodenburgPhaseRetrievalAlgorithm2004">(<a
-      href="#ref-rodenburgPhaseRetrievalAlgorithm2004"
-      role="doc-biblioref">14</a>)</span>, iterative methods for
-      ptychography started gaining popularity. PIE is a natural
-      extension of conventional CDI phase retrieval algorithms that
-      solve for a ptychographic dataset, where the additional constraint
-      of overlap was suggested to improve convergence.</p>
-      <p>After PIE, Guizar-Sicairos and Fienup developed a Conjugate
-      Gradient Descent (CGD) method <span class="citation"
-      data-cites="guizar-sicairosPhaseRetrievalTransverse2008">(<a
-      href="#ref-guizar-sicairosPhaseRetrievalTransverse2008"
-      role="doc-biblioref">15</a>)</span>, that solves globally rather
-      than piecewise like PIE. Another independent method was introduced
-      by Thibault et al. based on set projection, the Difference Map
-      (DM) <span class="citation"
-      data-cites="thibaultProbeRetrievalPtychographic2009">(<a
-      href="#ref-thibaultProbeRetrievalPtychographic2009"
-      role="doc-biblioref">16</a>)</span>. CGD and DM allowed the
-      simultaneous reconstruction of the object and probe, an important
-      feature of modern ptychography algorithms and one that improves
-      experimental robustness significantly. PIE was improved to solve
-      for the probe as well <span class="citation"
-      data-cites="maidenImprovedPtychographicalPhase2009">(<a
-      href="#ref-maidenImprovedPtychographicalPhase2009"
-      role="doc-biblioref">17</a>)</span>.</p>
-      <h3 id="relaxing-assumptions">Relaxing assumptions</h3>
-      <p>Robustness against experimental noise, which weakens the
-      fundamental assumptions of ptychography is also as important (if
-      not more) as the inversion algorithms. The following algorithms
-      (Class 2) are those that relax these assumptions, which allow
-      ptychography to be experimentally viable.</p>
-      <p>The simplest of these is to account for random noise. Perhaps
-      hinted by CGD, ptychography can be reformulated as an optimization
-      scheme. It should come as no surprise that a statistical noise
-      model can be incorporated by using Maximum Likelihood Estimation
-      (MLE), shown by Thibault and Guizar-Sicairos <span
-      class="citation"
-      data-cites="thibaultMaximumlikelihoodRefinementCoherent2012">(<a
-      href="#ref-thibaultMaximumlikelihoodRefinementCoherent2012"
-      role="doc-biblioref">18</a>)</span>. MLE can be computationally
-      expensive, however, so PIE or DM can first efficiently sweep the
-      solution space to find probable regions, while MLE can refine the
-      solution.</p>
-      <p>One improvement that radically improved the quality of
-      reconstruction was the introduction of mixed state ptychography by
-      Thibault and Menzel <span class="citation"
-      data-cites="thibaultReconstructingStateMixtures2013">(<a
-      href="#ref-thibaultReconstructingStateMixtures2013"
-      role="doc-biblioref">19</a>)</span>, which relaxes the fundamental
-      assumption of coherence. Introducing mixed states of the probe and
-      object via density matrices, they were able to connect
-      ptychography to quantum tomography. Allowing the beam to be
-      partially coherent can permit much more various and brighter
-      sources of light/electrons to be used.</p>
-      <p>The multiplicative assumption in real space, and the assumption
-      of known scan positions have also been relaxed by various methods.
-      The former can be tackled by effectively propagating the beam
-      through the sample with multi-slice ptychography <span
-      class="citation" data-cites="tsaiXrayPtychographyExtended2016">(<a
-      href="#ref-tsaiXrayPtychographyExtended2016"
-      role="doc-biblioref">5</a>)</span>, effectively achieving
-      volumetric imaging. Probe position refinement <span
-      class="citation"
-      data-cites="dwivediLateralPositionCorrection2018 odstrcilIterativeLeastsquaresSolver2018">(<a
-      href="#ref-dwivediLateralPositionCorrection2018"
-      role="doc-biblioref">20</a>,<a
-      href="#ref-odstrcilIterativeLeastsquaresSolver2018"
-      role="doc-biblioref">21</a>)</span> can be done through various
-      optimization schemes.</p>
-      <h2 class="unnumbered" id="bibliography">References</h2>
-      <div id="refs" class="references csl-bib-body"
-      data-entry-spacing="0" data-line-spacing="2" role="list">
-      <div id="ref-rodenburgPtychography2019" class="csl-entry"
-      role="listitem">
-      <div class="csl-left-margin">1. </div><div
-      class="csl-right-inline">Rodenburg, J. &amp; Maiden, A. in
-      <em>Springer <span>Handbook</span> of <span>Microscopy</span></em>
-      (eds. Hawkes, P. W. &amp; Spence, J. C. H.) 819–904 (Springer
-      International Publishing, 2019).</div>
-      </div>
-      <div id="ref-pfeifferXrayPtychography2018" class="csl-entry"
-      role="listitem">
-      <div class="csl-left-margin">2. </div><div
-      class="csl-right-inline">Pfeiffer, F. <a
-      href="https://doi.org/10.1038/s41566-017-0072-5" class="external"
-      target="_blank">X-ray ptychography</a>. <em>Nature Photonics</em>
-      <strong>12,</strong> 9–17 (2018).</div>
-      </div>
-      <div id="ref-thibaultHighResolutionScanningXray2008"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">3. </div><div
-      class="csl-right-inline">Thibault, P. <em>et al.</em> <a
-      href="https://doi.org/10.1126/science.1158573" class="external"
-      target="_blank">High-<span class="nocase">Resolution Scanning
-      X-ray Diffraction Microscopy</span></a>. <em>Science</em>
-      <strong>321,</strong> 379–382 (2008).</div>
-      </div>
-      <div id="ref-rodenburgHardXRayLenslessImaging2007"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">4. </div><div
-      class="csl-right-inline">Rodenburg, J. M. <em>et al.</em> <a
-      href="https://doi.org/10.1103/PhysRevLett.98.034801"
-      class="external" target="_blank">Hard-<span>X-Ray Lensless
-      Imaging</span> of <span>Extended Objects</span></a>. <em>Physical
-      Review Letters</em> <strong>98,</strong> 034801 (2007).</div>
-      </div>
-      <div id="ref-tsaiXrayPtychographyExtended2016" class="csl-entry"
-      role="listitem">
-      <div class="csl-left-margin">5. </div><div
-      class="csl-right-inline">Tsai, E. H. R., Usov, I., Diaz, A.,
-      Menzel, A. &amp; Guizar-Sicairos, M. <a
-      href="https://doi.org/10.1364/OE.24.029089" class="external"
-      target="_blank">X-ray ptychography with extended depth of
-      field</a>. <em>Optics Express</em> <strong>24,</strong> 29089
-      (2016).</div>
-      </div>
-      <div id="ref-jiangElectronPtychography2D2018" class="csl-entry"
-      role="listitem">
-      <div class="csl-left-margin">6. </div><div
-      class="csl-right-inline">Jiang, Y. <em>et al.</em> <a
-      href="https://doi.org/10.1038/s41586-018-0298-5" class="external"
-      target="_blank">Electron ptychography of <span>2D</span> materials
-      to deep sub-<span>Å</span>ngstr<span>ö</span>m resolution</a>.
-      <em>Nature</em> <strong>559,</strong> 343–349 (2018).</div>
-      </div>
-      <div id="ref-chenElectronPtychographyAchieves2021"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">7. </div><div
-      class="csl-right-inline">Chen, Z. <em>et al.</em> <a
-      href="https://doi.org/10.1126/science.abg2533" class="external"
-      target="_blank">Electron ptychography achieves atomic-resolution
-      limits set by lattice vibrations</a>. <em>Science</em>
-      <strong>372,</strong> 826–831 (2021).</div>
-      </div>
-      <div
-      id="ref-nguyenAchievingSub05angstromresolutionPtychography2024"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">8. </div><div
-      class="csl-right-inline">Nguyen, K. X. <em>et al.</em> <a
-      href="https://doi.org/10.1126/science.adl2029" class="external"
-      target="_blank">Achieving sub-0.5-angstrom–resolution ptychography
-      in an uncorrected electron microscope</a>. <em>Science</em>
-      <strong>383,</strong> 865–870 (2024).</div>
-      </div>
-      <div id="ref-chenMixedstateElectronPtychography2020"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">9. </div><div
-      class="csl-right-inline">Chen, Z. <em>et al.</em> <a
-      href="https://doi.org/10.1038/s41467-020-16688-6" class="external"
-      target="_blank">Mixed-state electron ptychography enables
-      sub-angstrom resolution imaging with picometer precision at low
-      dose</a>. <em>Nature Communications</em> <strong>11,</strong> 2994
-      (2020).</div>
-      </div>
-      <div id="ref-ophusFourDimensionalScanningTransmission2019"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">10. </div><div
-      class="csl-right-inline">Ophus, C. <a
-      href="https://doi.org/10.1017/S1431927619000497" class="external"
-      target="_blank">Four-<span>Dimensional Scanning Transmission
-      Electron Microscopy</span> (<span>4D-STEM</span>): <span>From
-      Scanning Nanodiffraction</span> to <span>Ptychography</span> and
-      <span>Beyond</span></a>. <em>Microscopy and Microanalysis</em>
-      <strong>25,</strong> 563–582 (2019).</div>
-      </div>
-      <div id="ref-hegerlDynamischeTheorieKristallstrukturanalyse1970"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">11. </div><div
-      class="csl-right-inline">Hegerl, R. &amp; Hoppe, W. <a
-      href="https://doi.org/10.1002/bbpc.19700741112" class="external"
-      target="_blank">Dynamische <span>Theorie</span> der
-      <span>Kristallstrukturanalyse</span> durch
-      <span>Elektronenbeugung</span> im inhomogenen <span
-      class="nocase">Prim<span
-      class="nocase">ä</span>rstrahlwellenfeld</span></a>. <em>Berichte
-      der Bunsengesellschaft f<span>ü</span>r physikalische Chemie</em>
-      <strong>74,</strong> 1148–1154 (1970).</div>
-      </div>
-      <div id="ref-batesSubangstromTransmissionMicroscopy1989"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">12. </div><div
-      class="csl-right-inline">Bates, R. H. T. &amp; Rodenburg, J. M. <a
-      href="https://doi.org/10.1016/0304-3991(89)90052-1"
-      class="external"
-      target="_blank">Sub-<span>Å</span>ngstr<span>ö</span>m
-      transmission microscopy: <span>A</span> fourier transform
-      algorithm for microdiffraction plane intensity information</a>.
-      <em>Ultramicroscopy</em> <strong>31,</strong> 303–307
-      (1989).</div>
-      </div>
-      <div id="ref-rodenburgTheorySuperResolutionElectron1992"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">13. </div><div
-      class="csl-right-inline">Rodenburg, J. M. &amp; Bates, R. H. T. <a
-      href="https://www.jstor.org/stable/53996" class="external"
-      target="_blank">The <span>Theory</span> of <span>Super-Resolution
-      Electron Microscopy Via Wigner-Distribution
-      Deconvolution</span></a>. <em>Philosophical Transactions: Physical
-      Sciences and Engineering</em> <strong>339,</strong> 521–553
-      (1992).</div>
-      </div>
-      <div id="ref-rodenburgPhaseRetrievalAlgorithm2004"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">14. </div><div
-      class="csl-right-inline">Rodenburg, J. M. &amp; Faulkner, H. M. L.
-      <a href="https://doi.org/10.1063/1.1823034" class="external"
-      target="_blank">A phase retrieval algorithm for shifting
-      illumination</a>. <em>Applied Physics Letters</em>
-      <strong>85,</strong> 4795–4797 (2004).</div>
-      </div>
-      <div id="ref-guizar-sicairosPhaseRetrievalTransverse2008"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">15. </div><div
-      class="csl-right-inline">Guizar-Sicairos, M. &amp; Fienup, J. R.
-      <a href="https://doi.org/10.1364/OE.16.007264" class="external"
-      target="_blank">Phase retrieval with transverse translation
-      diversity: A nonlinear optimization approach</a>. <em>Optics
-      Express</em> <strong>16,</strong> 7264–7278 (2008).</div>
-      </div>
-      <div id="ref-thibaultProbeRetrievalPtychographic2009"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">16. </div><div
-      class="csl-right-inline">Thibault, P., Dierolf, M., Bunk, O.,
-      Menzel, A. &amp; Pfeiffer, F. <a
-      href="https://doi.org/10.1016/j.ultramic.2008.12.011"
-      class="external" target="_blank">Probe retrieval in ptychographic
-      coherent diffractive imaging</a>. <em>Ultramicroscopy</em>
-      <strong>109,</strong> 338–343 (2009).</div>
-      </div>
-      <div id="ref-maidenImprovedPtychographicalPhase2009"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">17. </div><div
-      class="csl-right-inline">Maiden, A. M. &amp; Rodenburg, J. M. <a
-      href="https://doi.org/10.1016/j.ultramic.2009.05.012"
-      class="external" target="_blank">An improved ptychographical phase
-      retrieval algorithm for diffractive imaging</a>.
-      <em>Ultramicroscopy</em> <strong>109,</strong> 1256–1262
-      (2009).</div>
-      </div>
-      <div id="ref-thibaultMaximumlikelihoodRefinementCoherent2012"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">18. </div><div
-      class="csl-right-inline">Thibault, P. &amp; Guizar-Sicairos, M. <a
-      href="https://doi.org/10.1088/1367-2630/14/6/063004"
-      class="external" target="_blank">Maximum-likelihood refinement for
-      coherent diffractive imaging</a>. <em>New Journal of Physics</em>
-      <strong>14,</strong> 063004 (2012).</div>
-      </div>
-      <div id="ref-thibaultReconstructingStateMixtures2013"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">19. </div><div
-      class="csl-right-inline">Thibault, P. &amp; Menzel, A. <a
-      href="https://doi.org/10.1038/nature11806" class="external"
-      target="_blank">Reconstructing state mixtures from diffraction
-      measurements</a>. <em>Nature</em> <strong>494,</strong> 68–71
-      (2013).</div>
-      </div>
-      <div id="ref-dwivediLateralPositionCorrection2018"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">20. </div><div
-      class="csl-right-inline">Dwivedi, P., Konijnenberg, A. P.,
-      Pereira, S. F. &amp; Urbach, H. P. <a
-      href="https://doi.org/10.1016/j.ultramic.2018.04.004"
-      class="external" target="_blank">Lateral position correction in
-      ptychography using the gradient of intensity patterns</a>.
-      <em>Ultramicroscopy</em> <strong>192,</strong> 29–36 (2018).</div>
-      </div>
-      <div id="ref-odstrcilIterativeLeastsquaresSolver2018"
-      class="csl-entry" role="listitem">
-      <div class="csl-left-margin">21. </div><div
-      class="csl-right-inline">Odstrčil, M., Menzel, A. &amp;
-      Guizar-Sicairos, M. <a href="https://doi.org/10.1364/OE.26.003108"
-      class="external" target="_blank">Iterative least-squares solver
-      for generalized maximum-likelihood ptychography</a>. <em>Optics
-      Express</em> <strong>26,</strong> 3108–3123 (2018).</div>
-      </div>
-      </div>
-    </main>
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
   </div>
 
   

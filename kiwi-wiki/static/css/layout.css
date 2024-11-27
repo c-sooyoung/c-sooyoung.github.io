@@ -1,0 +1,37 @@
+body {  
+  display: grid;
+  overflow: auto;
+
+  grid-template-columns: 1fr;
+  grid-template-rows: max-content max-content auto max-content;
+
+  margin: 0;
+
+  grid-template-areas:
+    "titl"
+    "navi"
+    "main"
+    "desc";
+}
+
+@media screen and (min-width: 50rem) {
+  body {
+    grid-template-columns: 1fr 3fr;
+    grid-template-rows: auto min-content auto auto;
+    grid-template-areas:
+      "titl main"
+      "navi main"
+      "xxxx main"
+      "desc main";
+  }
+
+  main {
+    height: 100vh;
+    overflow-y: auto;
+  }
+}
+
+.title { grid-area: titl; }
+nav { grid-area: navi; }
+main { grid-area: main; }
+.kiwi-wiki-description { grid-area: desc; }
