@@ -24,11 +24,6 @@ body {
       "xxxx main"
       "desc main";
   }
-
-  main {
-    height: 100vh;
-    overflow-y: auto;
-  }
 }
 
 .title { grid-area: titl; }
