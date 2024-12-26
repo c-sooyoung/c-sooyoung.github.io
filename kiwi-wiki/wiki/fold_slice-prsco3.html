@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  
+  
+  
+  
+  <title>kiwi wiki – fold_slice PrScO3</title>
+
+  
+
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
+  
+  </head>
+
+<body>
+
+  
+  <h1 class="title">fold_slice PrScO3</h1>
+
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#top" id="toc-top">(Top)</a></li>
+        <li><a href="#setup" id="toc-setup">Setup</a></li>
+        <li><a href="#data" id="toc-data">Data</a></li>
+        <li><a href="#running-example-script"
+        id="toc-running-example-script">Running example script</a></li>
+        <li><a href="#troubleshooting"
+        id="toc-troubleshooting">Troubleshooting</a></li>
+        <li><a href="#notes" id="toc-notes">Notes</a>
+        <ul>
+        <li><a href="#ptychoshelves"
+        id="toc-ptychoshelves">PtychoShelves</a></li>
+        <li><a href="#fold_slice"
+        id="toc-fold_slice">fold_slice</a></li>
+        </ul></li>
+        </ul>
+  </nav>
+  
+  <main>
+    <h3 class="top-marker" id="top">(Top)</h3>
+    <blockquote>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
+    </blockquote>
+    <h2 id="setup">Setup</h2>
+    <ol start="0" type="1">
+    <li><p>Install <a
+    href="https://www.mathworks.com/products/matlab.html"
+    class="external" target="_blank">MATLAB</a> <strong>Required Add-ons
+    for fold_slice:</strong></p>
+    <ul>
+    <li>Signal Processing</li>
+    <li>Parallel Computing</li>
+    <li>Curve Fitting</li>
+    <li>Image Processing</li>
+    <li>Machine Learning and Statistics</li>
+    <li>Optimization</li>
+    </ul></li>
+    <li><p>get fold_slice code</p>
+    <div class="sourceCode" id="cb1"><pre
+    class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/yijiang1/fold_slice.git</span></code></pre></div></li>
+    </ol>
+    <h2 id="data">Data</h2>
+    <p><a href="https://data.paradim.org/doi/ssmm-2j11/"
+    class="external" target="_blank">PrScO3 sample data link</a></p>
+    <p>Save <code>sample_data_PrScO3.mat</code> file (and
+    <code>experimental_conditions.txt</code> for more
+    info/post-processing)<br />
+    (Recommended: save to separate <code>project_folder/data/</code>
+    directory)</p>
+    <h2 id="running-example-script">Running example script</h2>
+    <ol type="1">
+    <li><p>go to <code>fold_slice/ptycho/</code> directory</p></li>
+    <li><p>copy all <code>examples/PSO_science/xxxx.m</code> files to
+    <code>ptycho/</code> directory</p></li>
+    <li><p>First open <code>prepare_data_PSO_science.m</code></p>
+    <ol type="1">
+    <li>change <code>data_dir</code> to your data directory (line
+    9)</li>
+    <li>run all blocks</li>
+    </ol></li>
+    <li><p>Open <code>ptycho_electron_PSO_science.m</code></p>
+    <ol type="1">
+    <li>change <code>base_path</code> to your project directory (line
+    6)</li>
+    <li>run all blocks
+    <ul>
+    <li><strong>Most errors (shown as <code>#### PONG! ####</code>) will
+    probably occur here. See <a href="#troubleshooting"
+    title=" § troubleshooting">troubleshooting</a>.</strong></li>
+    </ul></li>
+    </ol>
+    <blockquote>
+    <p>An explanation of the code structure can be found <a
+    href="../notes/fold_slice-structure.html"
+    title="fold_slice-structure">here</a> or the fold_slice <a
+    href="https://github.com/yijiang1/fold_slice" class="external"
+    target="_blank">github</a></p>
+    </blockquote></li>
+    <li><p>Check results</p>
+    <ul>
+    <li>results are in <code>base_path/1/</code> folder</li>
+    <li>The <code>xxxx.hdf5</code> file is for PtychoShelves data
+    management</li>
+    <li><code>roi0_Ndp128/</code> folder (region of interest 0, 128x128
+    detector array) has reconstructions
+    <ul>
+    <li>Folder names have information on recon method</li>
+    <li><code>MLs_L1_p8_g64_pc50_noModel_vp1_Ns21_dz10_reg1/</code>
+    <ul>
+    <li><code>MLs</code>: Maximum Likelihood</li>
+    <li><code>L1</code>: error metric = L1 (왜 L2 안쓰는지는
+    모르겠음)</li>
+    <li><code>p8</code>: probe modes = 8</li>
+    <li><code>g64</code>: batch size = 64</li>
+    <li><code>pc50</code>: probe position correction starts at iteration
+    50</li>
+    <li><code>noModel</code>: no initial object guess</li>
+    <li><code>vp1</code>: variable probe = True</li>
+    <li><code>Ns21</code>: num slices = 21</li>
+    <li><code>dz10</code>: slice separation = 10 Angstroms</li>
+    </ul></li>
+    <li><code>MLs_L1_p8_g32_Ndp256_pc50_noModel_vp1_Ns21_dz10_reg1/</code>
+    <ul>
+    <li><code>Ndp256</code>: oversample 128x128 detector array to
+    256x256 (artificially “increases” resolution, but with more
+    artefacting)</li>
+    </ul></li>
+    </ul></li>
+    </ul></li>
+    </ol>
+    <h2 id="troubleshooting">Troubleshooting</h2>
+    <ul>
+    <li>function xxxx not found type errors:
+    <ul>
+    <li>Always run the code in <code>ptycho</code> directory</li>
+    <li>Search function name - sometimes they are Toolbox functions that
+    are not installed</li>
+    </ul></li>
+    <li><strong>CUDA errors</strong>
+    <ul>
+    <li>Probably version problems with Windows C++/CUDA compilers.</li>
+    <li>Never succeeded running on windows…</li>
+    <li><strong>Workaround solution: Windows subsystem for
+    Linux</strong>: <a href="../notes/matlab-on-wsl.html"
+    title="matlab-on-wsl">Install MATLAB inside WSL</a></li>
+    </ul>
+    <blockquote>
+    <h4 id="a-note-on-windows-and-cuda">A note on Windows and CUDA</h4>
+    <p>PtychoShelves’ reconsturction engines are usually built as C++
+    subroutines, probably for faster computation. They call for Matlab
+    <code>mex</code> to compile these at execution time.</p>
+    <p><strong>The problem</strong>:<br />
+    MinGW, the conventional C++ compiler for Windows, <strong>does not
+    support CUDA</strong>. Searching online, it seems that you need
+    Visual Studio and its official compilers by Nvidia. I gave up on
+    this approach - please let me know if there is another way to
+    compile for CUDA on Windows.</p>
+    </blockquote></li>
+    <li>on CPU
+    <ul>
+    <li>지못미</li>
+    </ul></li>
+    </ul>
+    <h2 id="notes">Notes</h2>
+    <h3 id="ptychoshelves">PtychoShelves</h3>
+    <p>PtychoShelves is a Matlab framework for <a
+    href="ptychography.html" title="ptychography">ptychography</a> - it
+    is a pipeline that allows the use of various reconstruction
+    algorithms.</p>
+    <p>PtychoShelves uses a modular approach, you can choose any process
+    for file i/o, data preprocessing, reconstruction algorithm, etc.
+    Popular algorithms for ptychography including Maximum Likelihood and
+    Difference Map are already implemented. You can also make your own
+    processes as well.</p>
+    <p>This pipeline is realized through the <code>p</code> struct,
+    where you can assign each module and their (hyper)parameters for the
+    pipeline. The individual subroutines can be implemented/accessed via
+    their own structs, for example the <code>det</code> struct for
+    detector settings and the <code>eng</code> struct for the
+    reconstruction engine settings.</p>
+    <p>I’m not familiar with this yet; need to get used to changing
+    <code>p</code> attributes and implementing custom engines.</p>
+    <h3 id="fold_slice">fold_slice</h3>
+    <p>Chen, Z. et al. (2021) uses a version of fold_slice, a package
+    built on top of PtychoShelves made for multislice ptychography.</p>
+    <p>The major differences being - Data and reconstruction I/O
+    conventions changed for electron ptychography (original
+    Ptychoshelves is mainly based on X-ray ptychography) - A modified
+    least-squares maximum likelihood multislice reconstruction engine
+    implemented in GPU_MS</p>
+    <p>A rough structure of the code can be found <a
+    href="../notes/fold_slice-structure.html"
+    title="fold_slice-structure">here</a>, and an explanation of the
+    reconstruction <a
+    href="../notes/fold_slice-prsco3-reconstruction.html"
+    title="fold_slice-prsco3-reconstruction">here</a>.</p>
+    <blockquote>
+    <h4 id="see-also">See also</h4>
+    <h5 id="published-papers">Published papers</h5>
+    <ul>
+    <li><strong>Multislice EM, PrScO3</strong>
+    <ul>
+    <li>Chen, Z. et al. Electron ptychography achieves atomic-resolution
+    limits set by lattice vibrations. Science 372, 826–831 (2021).</li>
+    </ul></li>
+    <li><strong>PtychoShelves Matlab framework</strong>
+    <ul>
+    <li>Wakonig, K. et al. PtychoShelves, a versatile high-level
+    framework for high-performance analysis of ptychographic data. J
+    Appl Cryst 53, 574–586 (2020).</li>
+    <li>(unmodified) PtychoShelves package <a
+    href="https://www.psi.ch/en/sls/csaxs/software" class="external"
+    target="_blank">download link</a></li>
+    </ul></li>
+    <li><strong>Maximum likelihood</strong>
+    <ul>
+    <li>Thibault, P. &amp; Guizar-Sicairos, M. Maximum-likelihood
+    refinement for coherent diffractive imaging. New J. Phys. 14, 063004
+    (2012).<br />
+    </li>
+    <li>Odstrčil, M., Menzel, A. &amp; Guizar-Sicairos, M. Iterative
+    least-squares solver for generalized maximum-likelihood
+    ptychography. Opt. Express, OE 26, 3108–3123 (2018).</li>
+    </ul></li>
+    <li><strong>Mixed state probe reconstruction</strong>
+    <ul>
+    <li>Thibault, P. &amp; Menzel, A. Reconstructing state mixtures from
+    diffraction measurements. Nature 494, 68–71 (2013).</li>
+    </ul></li>
+    <li><strong>Multislice</strong>
+    <ul>
+    <li>E. H. R. Tsai, I. Usov, A. Diaz, A. Menzel, and M.
+    Guizar-Sicairos, X-ray ptychography with extended depth of field,
+    Opt. Express 24, 29089-29108 (2016).</li>
+    </ul></li>
+    </ul>
+    <h5 id="other-helpful-sources">Other helpful sources</h5>
+    <ul>
+    <li><strong>fold_slice <a
+    href="https://github.com/yijiang1/fold_slice" class="external"
+    target="_blank">github</a></strong>
+    <ul>
+    <li>Yi Jiang’s modified PtychoShelves → multislice ptychography</li>
+    <li>There is a link to ptychography study group videos/materials in
+    <code>README</code></li>
+    </ul></li>
+    </ul>
+    </blockquote>
+  </main>
+
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
+  </div>
+
+  
+</body>
+
+</html>

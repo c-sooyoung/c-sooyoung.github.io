@@ -14,8 +14,8 @@
 
   
 
-  <link rel="stylesheet" href="/kiwi-wiki/static/css/wiki.css" />
-
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
   
     <script
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
@@ -50,6 +50,10 @@
   
   <main>
     <h3 class="top-marker" id="top">(Top)</h3>
+    <blockquote>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
+    </blockquote>
     <p><strong>Ptychography</strong> is an computational imaging
     technique built on methods from scanning transmission electron/X-ray
     microscopy (STE/XM) and coherent diffraction imaging (CDI) <span
@@ -131,37 +135,6 @@
     href="#ref-rodenburgPtychography2019"
     role="doc-biblioref">1</a>)</span>.</p>
     <h2 id="basic-mathematical-model">Basic mathematical model</h2>
-    <blockquote>
-    <h4 id="notation">Notation</h4>
-    <ul>
-    <li><strong>Coordinates</strong>
-    <ul>
-    <li>Real-space coordinates: <span
-    class="math inline">\(\mathbf{x}\)</span></li>
-    <li>Reciprocal-space coordinates: <span
-    class="math inline">\(\mathbf{k}\)</span></li>
-    </ul></li>
-    <li><strong>Reconstruction</strong>
-    <ul>
-    <li>The “object” (sample): <span
-    class="math inline">\(O\)</span></li>
-    <li>The “probe”: <span class="math inline">\(P\)</span></li>
-    <li>The reconstructions are denoted with a carat: <span
-    class="math inline">\(\hat{O}\)</span>, <span
-    class="math inline">\(\hat{P}\)</span></li>
-    <li>The <span class="math inline">\(n\)</span>th iteration is in
-    parentheses: <span class="math inline">\(\hat{O}^{(n)}\)</span>,
-    <span class="math inline">\(\hat{P}^{(n)}\)</span></li>
-    <li>The scan positions are indexed with <span
-    class="math inline">\(j\)</span>: <span
-    class="math inline">\(\mathbf{X}_j\)</span></li>
-    <li>The exit waves: <span
-    class="math inline">\(\psi_j(\mathbf{x})\)</span></li>
-    <li>The measured intensities: <span
-    class="math inline">\(I_j(\mathbf{k})\)</span></li>
-    </ul></li>
-    </ul>
-    </blockquote>
     <p>To build a reconstruction algorithm, we must have a mathematical
     model of the experiment. The core of ptychography can be summarised
     as:</p>
@@ -191,6 +164,16 @@
     <p>These two equations roughly represent the constraints that let us
     solve the phase problem; each in the real domain and reciprocal
     domain respectively.</p>
+    <blockquote>
+    <p>I will refer to this view as the ‘array’ picture, where the exit
+    wave is given by a simple element-wise product of <span
+    class="math inline">\(P\)</span> and <span
+    class="math inline">\(O\)</span>. This picture is ultimately what we
+    need to implement in code</p>
+    <p>For a more quantum mechanical approach, see <a
+    href="../notes/mixed-state-ptychography.html#connection-to-quantum-tomography"
+    title="mixed-state-ptychography § connection-to-quantum-tomography">here</a>.</p>
+    </blockquote>
     <h2 id="reconstruction-algorithms">Reconstruction algorithms</h2>
     <p>Modelling the forward propagation is simple; however, going
     backwards is tricky. This is an inverse problem, where one wants to
@@ -277,7 +260,9 @@
     solution space to find probable regions, while MLE can refine the
     solution.</p>
     <p>One improvement that radically improved the quality of
-    reconstruction was the introduction of mixed state ptychography by
+    reconstruction was the introduction of <a
+    href="../notes/mixed-state-ptychography.html"
+    title="mixed-state-ptychography">mixed state ptychography</a> by
     Thibault and Menzel <span class="citation"
     data-cites="thibaultReconstructingStateMixtures2013">(<a
     href="#ref-thibaultReconstructingStateMixtures2013"
@@ -301,7 +286,7 @@
     href="#ref-odstrcilIterativeLeastsquaresSolver2018"
     role="doc-biblioref">21</a>)</span> can be done through various
     optimization schemes.</p>
-    <h2 class="unnumbered" id="bibliography">References</h2>
+    <h1 class="unnumbered" id="bibliography">References</h1>
     <div id="refs" class="references csl-bib-body"
     data-entry-spacing="0" data-line-spacing="2" role="list">
     <div id="ref-rodenburgPtychography2019" class="csl-entry"

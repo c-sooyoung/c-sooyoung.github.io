@@ -1,0 +1,36 @@
+@import url("layout.css");
+@import url("common.css");
+@import url("fonts.css");
+
+:root {
+  --font-main: var(--font-serif);
+}
+
+nav {
+  #toc-top {
+    display: none;
+  }
+
+  img {
+    width: 100%;
+    height: 4em;
+    object-fit: cover;
+    margin: 0;
+    opacity: 0.4;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@media screen and (min-width: 50rem) {
+  img {
+    max-height: calc(100vh - 2 * var(--border-spacing));
+    margin: auto;
+
+    p:has(> &) {
+      max-width: 100%;
+    }
+  }
+}

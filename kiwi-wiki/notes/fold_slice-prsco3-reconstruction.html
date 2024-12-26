@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  
+  
+  
+  
+  <title>kiwi wiki – fold_slice PrScO3 Reconstruction</title>
+
+  
+
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
+  
+  </head>
+
+<body>
+
+  
+  <h1 class="title">fold_slice PrScO3 Reconstruction</h1>
+
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#top" id="toc-top">(Top)</a></li>
+        <li><a href="#data-preparation" id="toc-data-preparation">Data
+        preparation</a></li>
+        <li><a href="#object-initialization"
+        id="toc-object-initialization">Object initialization</a></li>
+        <li><a href="#probe-initialization"
+        id="toc-probe-initialization">Probe initialization</a>
+        <ul>
+        <li><a href="#initial-theoretical-probe"
+        id="toc-initial-theoretical-probe">Initial theoretical
+        probe</a></li>
+        <li><a href="#mode-decomposition"
+        id="toc-mode-decomposition">Mode decomposition</a></li>
+        </ul></li>
+        <li><a href="#bibliography"
+        id="toc-bibliography">References</a></li>
+        </ul>
+  </nav>
+  
+  <main>
+    <h3 class="top-marker" id="top">(Top)</h3>
+    <blockquote>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
+    </blockquote>
+    <h2 id="data-preparation">Data preparation</h2>
+    <h2 id="object-initialization">Object initialization</h2>
+    <h2 id="probe-initialization">Probe initialization</h2>
+    <p>Lines 140 to 170 set the parameters the probe in the
+    <code>p</code> object. The probe initialization script is found at
+    <code>+core/prepare_initial_probes.m</code>.</p>
+    <h3 id="initial-theoretical-probe">Initial theoretical probe</h3>
+    <p>A theoretical probe is generated if
+    <code>p.model_probe = true;</code> (line 141). The probe is
+    generated in <code>+core/ptycho_model_probe.m</code> using the
+    parameters in <code>p.model.*</code>. As <code>p.beam_source</code>
+    (line 39) is set to <code>'electron'</code>, the probe is generated
+    by following Eq.(2.10) of <span class="citation"
+    data-cites="kirklandAdvancedComputingElectron2010">(<a
+    href="#ref-kirklandAdvancedComputingElectron2010"
+    role="doc-biblioref">1</a>)</span>.</p>
+    <h3 id="mode-decomposition">Mode decomposition</h3>
+    <p>The initiated probe by <code>+core/ptycho_model_probe.m</code> is
+    a ‘flat’ array of shape <code>(Ndpx, Ndpx)</code>. The PSO example
+    sets 8 probe modes by <code>p.probe_modes = Nprobe;</code> (line
+    164). The original flat probe is assigned to the first mode, and the
+    rest are generated with the parameters
+    <code>p.mode_start_pow = 0.02;</code>,
+    <code>p.mode_start = 'herm';</code>, and
+    <code>p.ortho_probes = true;</code>.</p>
+    <h4 id="hermite-generation">Hermite generation</h4>
+    <p>The extra probes are generated using Hermite polynomials.</p>
+    <blockquote>
+    <p>PtychoShelves (and fold_slice) supports multiple probes. Thus the
+    actual probe saved in <code>p</code> has a shape of
+    <code>(Ndpx, Ndpx, PROBE_NUMBER, PROBE_MODES)</code>. However, the
+    PSO example only uses one probe.</p>
+    </blockquote>
+    <h1 class="unnumbered" id="bibliography">References</h1>
+    <div id="refs" class="references csl-bib-body"
+    data-entry-spacing="0" data-line-spacing="2" role="list">
+    <div id="ref-kirklandAdvancedComputingElectron2010"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">1. </div><div
+    class="csl-right-inline">Kirkland, E. J. <em>Advanced
+    <span>Computing</span> in <span>Electron Microscopy</span></em>.
+    (Springer US, 2010). doi:<a
+    href="https://doi.org/10.1007/978-1-4419-6533-2" class="external"
+    target="_blank">10.1007/978-1-4419-6533-2</a></div>
+    </div>
+    </div>
+  </main>
+
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
+  </div>
+
+  
+</body>
+
+</html>

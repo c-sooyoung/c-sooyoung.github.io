@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  
+  
+  
+  
+  <title>kiwi wiki – MATLAB on WSL</title>
+
+  
+
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
+  
+  </head>
+
+<body>
+
+  
+  <h1 class="title">MATLAB on WSL</h1>
+
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#installation"
+        id="toc-installation">Installation</a></li>
+        <li><a href="#possible-issues" id="toc-possible-issues">Possible
+        issues</a></li>
+        </ul>
+  </nav>
+  
+  <main>
+    <h2 id="installation">Installation</h2>
+    <ol type="1">
+    <li><p>Download the Matlab installer (zip file) for Linux</p></li>
+    <li><p>Move the file to your WSL home (or any other)
+    directory</p></li>
+    <li><p>Unzip the file, and run the <code>install</code> executable
+    inside <code>bash     sudo ./install</code> This should install
+    Matlab inside <code>/usr/local/MATLAB/RXXXX</code><br />
+    → <em>If the install crashes, see <a href="#possible-issues"
+    title=" § possible-issues">possible issues</a> below</em></p></li>
+    <li><p>Navigate to <code>/usr/local/MATLAB/RXXXX/bin</code> and run
+    Matlab <code>bash     ./matlab</code></p>
+    <blockquote>
+    <h4 id="shortcut">Shortcut</h4>
+    <p>add alias for matlab to <code>.bashrc</code>:</p>
+    <div class="sourceCode" id="cb1"><pre
+    class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">alias</span> matlab=<span class="st">&#39;/usr/local/MATLAB/RXXXX/bin/matlab&#39;</span></span></code></pre></div>
+    </blockquote></li>
+    </ol>
+    <h2 id="possible-issues">Possible issues</h2>
+    <ul>
+    <li><p>WSL not able to open GUIs</p>
+    <ol type="1">
+    <li><p>Shutdown then update WSL (outside WSL, in powershell)
+    <code>powershell      # powershell      wsl --shutdown      wsl --update</code></p></li>
+    <li><p>test by installing <code>xeyes</code> (inside WSL bash)
+    <code>bash      # bash      sudo apt install xeyes      xeyes</code></p></li>
+    </ol></li>
+    <li><p>Matlab doesn’t have permissions for
+    <code>/usr/local/...</code></p>
+    <div class="sourceCode" id="cb2"><pre
+    class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># bash</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> chown <span class="at">-R</span> <span class="va">$LOGNAME</span>: /usr/local/MATLAB/R2023b</span></code></pre></div>
+    <p>This may also occur when trying to install addons.</p></li>
+    </ul>
+  </main>
+
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
+  </div>
+
+  
+</body>
+
+</html>

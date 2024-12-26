@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  
+  
+  
+  
+  <title>kiwi wiki – fold_slice structure</title>
+
+  
+
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
+  
+  </head>
+
+<body>
+
+  
+  <h1 class="title">fold_slice structure</h1>
+
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#top" id="toc-top">(Top)</a></li>
+        </ul>
+  </nav>
+  
+  <main>
+    <h3 class="top-marker" id="top">(Top)</h3>
+    <blockquote>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
+    </blockquote>
+    <h4
+    id="prepare_data_pso_science.m"><code>prepare_data_PSO_science.m</code></h4>
+    <ul>
+    <li>reads cbed dataset, initializes basic parameters</li>
+    </ul>
+    <h4
+    id="ptycho_electron_pso_science.m"><code>ptycho_electron_PSO_science.m</code></h4>
+    <ul>
+    <li>main reconstruction file, assigns parameters in the
+    <code>p</code> object</li>
+    <li>engines are configured separately in the <code>eng</code>
+    object, and appended to <code>p</code> via
+    <code>+core/append_engine.m</code></li>
+    <li>336~338: <code>+core/ptycho_recons</code>
+    <ul>
+    <li>172: <code>+core/initialize_ptycho.m</code>
+    <ul>
+    <li>81~103: calculates proper <code>dx</code> (object pixel
+    pitch)</li>
+    <li>107: <code>+scans/read_positions.m</code>
+    <ul>
+    <li>19~20: <code>+scans/positions/{function_name}.m</code>
+    <ul>
+    <li>use the <code>'matlab_pos'</code> function</li>
+    <li>grid mode <code>'raster'</code></li>
+    <li><del><code>+core/ptycho_adjust_positions.m</code> does a
+    primitive refinement of the positions (Affine transform
+    etc/)</del></li>
+    </ul></li>
+    </ul></li>
+    <li>141: <code>+core/ptycho_prepare_scans.m</code>
+    <ul>
+    <li>132: <code>+core/prepare_initial_guess.m</code>
+    <ul>
+    <li>Object</li>
+    <li><del>73: <code>+core/update_object_size.m</code></del></li>
+    <li>75: <code>+core/prepare_initial_object.m</code>
+    <ul>
+    <li>use <code>rand</code> option</li>
+    <li>27: generate random phase object</li>
+    <li>30~: if using other initial guess</li>
+    </ul></li>
+    <li>Probe</li>
+    <li>78: <code>+core/prepare_initial_probes.m</code>
+    <ul>
+    <li>7: <code>+core/ptycho_model_probe.m</code>
+    <ul>
+    <li>23~73: theoretical electron probe</li>
+    </ul></li>
+    <li>15~81: split into modes mode energies assigned by
+    <code>p.mode_start_pow</code> mode splitting algorithm assigned by
+    <code>p.mode_start</code> (default <code>"herm"</code>)</li>
+    <li>84~154: orthogonalization</li>
+    </ul></li>
+    </ul></li>
+    </ul></li>
+    <li><del>147: custom prepare data function</del></li>
+    <li><del>156~232: preprocessing for abnormal cbed
+    detections</del></li>
+    <li><del>238~273: plotting initial guesses</del></li>
+    </ul></li>
+    <li>193: enumerate over engines in <code>p</code></li>
+    <li>202: <code>+core/run_engine.m</code> (with engine id as
+    argument)
+    <ul>
+    <li><del>79: <code>+core/engine_status</code> (set status to
+    0)</del></li>
+    <li>80~81: <code>+engines/{engine_name}.m</code> (assigned to
+    <code>engine_fnct</code>)
+    <ul>
+    <li>use <code>'GPU_MS'</code> engine</li>
+    <li>22: <code>+engines/+GPU_MS/+initialize/get_defaults.m</code>:
+    generate default parameters as <code>param</code></li>
+    <li>29: <code>+engines/+GPU_MS/+initialize/load_from_p.m</code>: get
+    the presupplied parameters from <code>p</code> and
+    <code>param</code>; returns <code>self</code>, <code>param</code>,
+    <code>p</code></li>
+    <li>58~71: initialize GPU and solver</li>
+    <li>78~123: GPU safety</li>
+    <li>127: <code>+engines/+GPU_MS/ptycho_solver.m</code>
+    <ul>
+    <li>280~289: <code>+engines/+GPU_MS/{method}.m</code></li>
+    </ul>
+    <ol type="1">
+    <li>LSQML
+    <ul>
+    <li></li>
+    </ul></li>
+    <li>DM</li>
+    <li>PIE</li>
+    </ol></li>
+    </ul></li>
+    </ul></li>
+    </ul></li>
+    </ul>
+  </main>
+
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
+  </div>
+
+  
+</body>
+
+</html>

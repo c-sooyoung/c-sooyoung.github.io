@@ -14,8 +14,8 @@
 
   
 
-  <link rel="stylesheet" href="/kiwi-wiki/static/css/wiki.css" />
-
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
   
     <script
     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
@@ -42,18 +42,8 @@
   <main>
     <h3 class="top-marker" id="top">(Top)</h3>
     <blockquote>
-    <h4 id="see-also">See also</h4>
-    <ul>
-    <li>Faulkner, H. M. L. &amp; Rodenburg, J. M. Movable Aperture
-    Lensless Transmission Microscopy: A Novel Phase Retrieval Algorithm.
-    <em>Phys. Rev. Lett.</em> <strong>93</strong>, 023903 (2004).</li>
-    <li>Rodenburg, J. M. &amp; Faulkner, H. M. L. A phase retrieval
-    algorithm for shifting illumination. <em>Applied Physics
-    Letters</em> <strong>85</strong>, 4795–4797 (2004).</li>
-    <li>Rodenburg, J. M. <em>et al.</em> Hard-X-Ray Lensless Imaging of
-    Extended Objects. <em>Phys. Rev. Lett.</em> <strong>98</strong>,
-    034801 (2007).</li>
-    </ul>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
     </blockquote>
     <p>The <strong>Ptychographic Iterative Engine (PIE)</strong> is the
     first iterative algorithm used for <a href="ptychography.html"
@@ -84,38 +74,15 @@
     I_j(\mathbf{k}) = |{\Psi}_j(\mathbf{k})|^2 = | \mathcal{F}
     [\psi_j(\mathbf{x})] |^2
     \]</span></p>
-    <blockquote>
-    <h4 id="notation">Notation</h4>
-    <ul>
-    <li><strong>Coordinates</strong>
-    <ul>
-    <li>Real-space coordinates: <span
-    class="math inline">\(\mathbf{x}\)</span></li>
-    <li>Reciprocal-space coordinates: <span
-    class="math inline">\(\mathbf{k}\)</span></li>
-    </ul></li>
-    <li><strong>Reconstruction</strong>
-    <ul>
-    <li>The “object” (sample): <span
-    class="math inline">\(O\)</span></li>
-    <li>The “probe”: <span class="math inline">\(P\)</span></li>
-    <li>The reconstructions are denoted with a carat: <span
-    class="math inline">\(\hat{O}\)</span>, <span
-    class="math inline">\(\hat{P}\)</span></li>
-    <li>The <span class="math inline">\(n\)</span>th iteration is in
-    parentheses: <span class="math inline">\(\hat{O}^{(n)}\)</span>,
-    <span class="math inline">\(\hat{P}^{(n)}\)</span></li>
-    <li>The scan positions are indexed with <span
-    class="math inline">\(j\)</span>: <span
-    class="math inline">\(\mathbf{X}_j\)</span></li>
-    <li>The exit waves (“views”): <span
-    class="math inline">\(\psi_j(\mathbf{x})\)</span></li>
-    <li>The measured intensities: <span
-    class="math inline">\(I_j(\mathbf{k})\)</span></li>
-    </ul></li>
-    </ul>
-    </blockquote>
     <h2 id="algorithm">Algorithm</h2>
+    <blockquote>
+    <p>Faulkner, H. M. L. &amp; Rodenburg, J. M. Movable Aperture
+    Lensless Transmission Microscopy: A Novel Phase Retrieval Algorithm.
+    <em>Phys. Rev. Lett.</em> <strong>93</strong>, 023903 (2004).<br />
+    Rodenburg, J. M. &amp; Faulkner, H. M. L. A phase retrieval
+    algorithm for shifting illumination. <em>Applied Physics
+    Letters</em> <strong>85</strong>, 4795–4797 (2004).</p>
+    </blockquote>
     <p>Let us outline the basics of the original PIE algorithm given by
     Rodenburg and Faulkner in <span class="citation"
     data-cites="rodenburgPhaseRetrievalAlgorithm2004">(<a
@@ -206,6 +173,13 @@
     <li><span class="math inline">\(\beta\)</span> controls the
     feedback; i.e. the size of the update at each iteration.</li>
     </ul>
+    <blockquote>
+    <p>In Rodenburg and Faulkner’s words:</p>
+    <p>“The [weighting] function favors the inﬂuence of those areas of
+    the specimen which have been strongly illuminated and attenuates the
+    high errors which otherwise arise where the illumination was
+    weak.”</p>
+    </blockquote>
     <p>These steps are repeated for the next piece (next index <span
     class="math inline">\(j\)</span>) until the sum squared error <span
     class="math inline">\(\epsilon\)</span> converges. In practice, it
@@ -218,13 +192,9 @@
     <h2 id="simultaneously-solving-the-probe-epie">Simultaneously
     solving the probe: ePIE</h2>
     <blockquote>
-    <h4 id="see-also-1">See also</h4>
-    <ul>
-    <li>Maiden, A. M. &amp; Rodenburg, J. M. An improved ptychographical
+    <p>Maiden, A. M. &amp; Rodenburg, J. M. An improved ptychographical
     phase retrieval algorithm for diffractive imaging.
-    <em>Ultramicroscopy</em> <strong>109</strong>, 1256–1262
-    (2009).</li>
-    </ul>
+    <em>Ultramicroscopy</em> <strong>109</strong>, 1256–1262 (2009).</p>
     </blockquote>
     <p>The simultaneous reconstruction of the probe has been a key part
     in the robustness of ptychography. Maiden and Rodenburg introduced
@@ -260,7 +230,7 @@
     chosen for the update size; the original ePIE paper uses <span
     class="math inline">\(\beta_O = \beta_P = 1\)</span>.</p>
     <blockquote>
-    <p>Comment:</p>
+    <h5 id="comment">Comment:</h5>
     <p>Note that the real space constraint <span
     class="math inline">\(\psi = O(\mathbf{x}) \cdot P(\mathbf{x} -
     \mathbf{X}_j)\)</span>, implies <span
@@ -279,7 +249,7 @@
     However, from the algorithm’s point of view, it is indistinguishable
     to having a large ‘probe’ to image a small ‘object’.</p>
     </blockquote>
-    <h2 class="unnumbered" id="bibliography">References</h2>
+    <h1 class="unnumbered" id="bibliography">References</h1>
     <div id="refs" class="references csl-bib-body"
     data-entry-spacing="0" data-line-spacing="2" role="list">
     <div id="ref-faulknerMovableApertureLensless2004" class="csl-entry"

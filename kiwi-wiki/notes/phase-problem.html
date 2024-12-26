@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  
+  
+  
+  
+  <title>kiwi wiki – Phase Problem</title>
+
+  
+
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
+  
+  </head>
+
+<body>
+
+  
+  <h1 class="title">Phase Problem</h1>
+
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#top" id="toc-top">(Top)</a></li>
+        <li><a href="#single-object-phase-retrieval"
+        id="toc-single-object-phase-retrieval">Single object phase
+        retrieval</a>
+        <ul>
+        <li><a href="#the-phase-problem" id="toc-the-phase-problem">The
+        phase problem</a></li>
+        <li><a href="#iterative-phase-retrieval"
+        id="toc-iterative-phase-retrieval">Iterative phase retrieval</a>
+        <ul>
+        <li><a
+        href="#gerchberg-saxton-algorithm-and-fienups-improvements"
+        id="toc-gerchberg-saxton-algorithm-and-fienups-improvements">Gerchberg-Saxton
+        algorithm and Fienup’s improvements</a></li>
+        <li><a href="#maximum-likelihood-estimation"
+        id="toc-maximum-likelihood-estimation">Maximum Likelihood
+        Estimation</a></li>
+        <li><a href="#difference-map-and-raar"
+        id="toc-difference-map-and-raar">Difference Map and
+        RAAR</a></li>
+        </ul></li>
+        </ul></li>
+        <li><a href="#bibliography"
+        id="toc-bibliography">References</a></li>
+        </ul>
+  </nav>
+  
+  <main>
+    <h3 class="top-marker" id="top">(Top)</h3>
+    <blockquote>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
+    </blockquote>
+    <blockquote>
+    <h4 id="see-also">See also</h4>
+    <ul>
+    <li>R. P. Millane, <em>Phase Retrieval in Crystallography and
+    Optics</em>, J. Opt. Soc. Am. A <strong>7</strong>, 394 (1990).</li>
+    <li>J. R. Fienup, <em>Phase Retrieval Algorithms: A Comparison</em>,
+    Appl. Opt., AO <strong>21</strong>, 2758 (1982).</li>
+    </ul>
+    </blockquote>
+    <h1 id="single-object-phase-retrieval">Single object phase
+    retrieval</h1>
+    <h2 id="the-phase-problem">The phase problem</h2>
+    <p>Many detectors are limited to measuring only the intensities of a
+    wavefront, discarding the phase part. Unfortunately the phases
+    contain valuable structural information, which is a problem for all
+    coherent diffraction imaging (CDI) methods.</p>
+    <blockquote>
+    <p><strong>a</strong> <img
+    src="assets/phase-problem/20241125_173331.png" alt="300"
+    width="300" /><br />
+    <strong>b</strong> <img
+    src="assets/phase-problem/20241125_173322.png" alt="300"
+    width="300" /></p>
+    <p><strong>A cat and a bird, and their Fourier
+    transforms.</strong><br />
+    Brightness = amplitude, color = phase. Idea from Cowtan <span
+    class="citation" data-cites="cowtanPictureBookFourier2001">(<a
+    href="#ref-cowtanPictureBookFourier2001"
+    role="doc-biblioref">1</a>)</span>.</p>
+    </blockquote>
+    <p>A propagated wave (in the far field) is the Fourier transform of
+    its source. Backpropagating a diffraction pattern is as simple as
+    taking the inverse Fourier transform, but without the phases this is
+    meaningless.</p>
+    <blockquote>
+    <p><strong>a</strong> <img
+    src="assets/phase-problem/20241125_173345.png" alt="300"
+    width="300" /><br />
+    <strong>b</strong> <img
+    src="assets/phase-problem/20241125_173409.png" alt="300"
+    width="300" /></p>
+    <p><strong>Inverse Fourier transforms when the phase part is
+    changed.</strong><br />
+    <strong>a</strong> Amplitude from bird, phase from cat.
+    <strong>b</strong> Amplitude from cat, phase from bird. The phases
+    encode most of the structural information <span class="citation"
+    data-cites="cowtanPictureBookFourier2001">(<a
+    href="#ref-cowtanPictureBookFourier2001"
+    role="doc-biblioref">1</a>)</span>.</p>
+    </blockquote>
+    <p>The phase problem is solved through a priori knowledge or
+    assumptions about the sample <span class="citation"
+    data-cites="millanePhaseRetrievalCrystallography1990">(<a
+    href="#ref-millanePhaseRetrievalCrystallography1990"
+    role="doc-biblioref">2</a>)</span>. This knowledge acts as
+    constraints for the inversion, forcing the solution to be
+    unique.</p>
+    <h2 id="iterative-phase-retrieval">Iterative phase retrieval</h2>
+    <p>The first successful approach for phase retrieval came from
+    Gerchberg and Saxton in 1972 <span class="citation"
+    data-cites="gerchbergPracticalAlgorithmDetermination1972">(<a
+    href="#ref-gerchbergPracticalAlgorithmDetermination1972"
+    role="doc-biblioref">3</a>)</span>, who used an iterative method to
+    solve the phase problem for electron microscopy. Their method of
+    optimizing in two different regimes each with its own restraints is
+    still highly relevant to more modern phase retrieval schemes.</p>
+    <h3
+    id="gerchberg-saxton-algorithm-and-fienups-improvements">Gerchberg-Saxton
+    algorithm and Fienup’s improvements</h3>
+    <h3 id="maximum-likelihood-estimation">Maximum Likelihood
+    Estimation</h3>
+    <p>Fienup shows that the Gerchberg-Saxton algorithm is in essence
+    solving an optimization problem for the error metric. However, this
+    “loss function” is not strictly required to be the sum of squares.
+    Another approach, based on probabilities, is known as Maximum
+    Likelihood Estimation.</p>
+    <h3 id="difference-map-and-raar">Difference Map and RAAR</h3>
+    <h1 class="unnumbered" id="bibliography">References</h1>
+    <div id="refs" class="references csl-bib-body"
+    data-entry-spacing="0" data-line-spacing="2" role="list">
+    <div id="ref-cowtanPictureBookFourier2001" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">1. </div><div
+    class="csl-right-inline">Cowtan, K. Picture <span>Book</span> of
+    <span>Fourier Transforms</span>. (2001).</div>
+    </div>
+    <div id="ref-millanePhaseRetrievalCrystallography1990"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">2. </div><div
+    class="csl-right-inline">Millane, R. P. <a
+    href="https://doi.org/10.1364/JOSAA.7.000394" class="external"
+    target="_blank">Phase retrieval in crystallography and optics</a>.
+    <em>Journal of the Optical Society of America A</em>
+    <strong>7,</strong> 394 (1990).</div>
+    </div>
+    <div id="ref-gerchbergPracticalAlgorithmDetermination1972"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">3. </div><div
+    class="csl-right-inline">Gerchberg, R. W. &amp; Saxton, W. O. A
+    <span>Practical Algorithm</span> for the <span>Determination</span>
+    of <span>Phase</span> from <span>Image</span> and <span>Diffraction
+    Plane Pictures</span>. <em>Optik</em> <strong>35,</strong>
+    (1972).</div>
+    </div>
+    </div>
+  </main>
+
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
+  </div>
+
+  
+</body>
+
+</html>

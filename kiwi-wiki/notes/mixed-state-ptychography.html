@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+  
+  
+  
+  
+  <title>kiwi wiki – Mixed State Ptychography</title>
+
+  
+
+    <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
+  
+    <script
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+    type="text/javascript"></script>
+  </head>
+
+<body>
+
+  
+  <h1 class="title">Mixed State Ptychography</h1>
+
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#top" id="toc-top">(Top)</a></li>
+        <li><a href="#connection-to-quantum-tomography"
+        id="toc-connection-to-quantum-tomography">Connection to quantum
+        tomography</a></li>
+        <li><a href="#mixed-probe-states"
+        id="toc-mixed-probe-states">Mixed probe states</a></li>
+        <li><a href="#bibliography"
+        id="toc-bibliography">References</a></li>
+        </ul>
+  </nav>
+  
+  <main>
+    <h3 class="top-marker" id="top">(Top)</h3>
+    <blockquote>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
+    </blockquote>
+    <p><strong>Mixed state ptychography</strong> is a method of
+    accounting for decoherence effects in a <a
+    href="../wiki/ptychography.html"
+    title="ptychography">ptychography</a> experiment by considering the
+    probe (or object) as a mixture of quantum states by a <a
+    href="https://en.wikipedia.org/wiki/Density_matrix" class="external"
+    target="_blank">density matrix</a>. Considering mixed states in the
+    experiment can drastically improve the resolution of the
+    reconstruction <span class="citation"
+    data-cites="thibaultReconstructingStateMixtures2013 chenMixedstateElectronPtychography2020">(<a
+    href="#ref-thibaultReconstructingStateMixtures2013"
+    role="doc-biblioref">1</a>,<a
+    href="#ref-chenMixedstateElectronPtychography2020"
+    role="doc-biblioref">2</a>)</span>.</p>
+    <h2 id="connection-to-quantum-tomography">Connection to quantum
+    tomography</h2>
+    <blockquote>
+    <p>Supplementary Material from: Thibault, P. &amp; Menzel, A.
+    Reconstructing state mixtures from diffraction measurements.
+    <em>Nature</em> <strong>494,</strong> 68–71 (2013).</p>
+    </blockquote>
+    <p>Let us take a more quantum mechanical-ly motivated view of
+    ptychography, assuming for the moment a fully coherent experiment.
+    Essentially we have</p>
+    <ul>
+    <li>an incoming probe state <span
+    class="math inline">\(\ket{P}\)</span></li>
+    <li>scattered by the object operator <span
+    class="math inline">\(\hat{O}\)</span></li>
+    <li>producing an exit wave <span class="math inline">\(\ket{\psi} =
+    \hat{O}\ket{P}\)</span>
+    <ul>
+    <li>i.e. <span class="math inline">\(\hat{O}_j \equiv
+    \ket{\psi_j}\bra{P}\)</span> is a scattering matrix relating the
+    probe to the exit wave</li>
+    </ul></li>
+    <li>to be detected in the reciprocal <span
+    class="math inline">\(\mathbf{k}\)</span> basis as <span
+    class="math inline">\(I = \left| \braket{\mathbf{k}|\psi}
+    \right|^2\)</span>.</li>
+    </ul>
+    <p>This formulation is equivalent to the <a
+    href="../wiki/ptychography.html#basic-mathematical-model"
+    title="ptychography § basic-mathematical-model">array picture</a>
+    given that, <span class="math inline">\(P(x) =
+    \braket{\mathbf{x}|P}\)</span> is the <span
+    class="math inline">\(\mathbf{x}\)</span> basis representation of
+    <span class="math inline">\(\ket{P}\)</span>, and <span
+    class="math inline">\(O(\mathbf{x}) = \bra{\mathbf{x}} \hat{O}
+    \ket{\mathbf{x}}\)</span> with <span
+    class="math inline">\(\hat{O}\)</span> diagonal in the <span
+    class="math inline">\(\mathbf{x}\)</span> basis.</p>
+    <p>Then from the last line,</p>
+    <p><span class="math display">\[
+    \begin{align}
+    I_j(\mathbf{k})
+    &amp;= \left|\bra{\mathbf{k}}\hat{O}_j\ket{P}\right|^2 \\ \\
+    &amp;= \bra{P}\hat{O}_j^{\dagger}\ket{\mathbf{k}}
+    \bra{\mathbf{k}}\hat{O}_j\ket{P} \\ \\
+    &amp;=
+    \sum_{\mathbf{k}^\prime}  \braket{P|\mathbf{k}^\prime}  \bra{\mathbf{k}^\prime}\hat{O}_j^{\dagger}\ket{\mathbf{k}}  \bra{\mathbf{k}}\hat{O}_j\ket{P}
+    \\ \\
+    &amp;= \sum_{\mathbf{k}^\prime} \bra{\mathbf{k}^\prime}
+    \left[\hat{O}_j^{\dagger}\ket{\mathbf{k}}\bra{\mathbf{k}}\hat{O}_j\ket{P}\bra{P}\right]
+    \ket{\mathbf{k}^\prime}\\ \\
+    &amp;\equiv \operatorname{Tr}{\left(\mathcal{I_{j\mathbf{k}}\
+    \rho}\right)}
+    \end{align}
+    \]</span></p>
+    <p>Where we have defined the terms in the square brackets as:</p>
+    <ul>
+    <li><span class="math inline">\(\mathcal{I}_{j\mathbf{k}} \equiv
+    \hat{O}_j^{\dagger}\ket{\mathbf{k}}\bra{\mathbf{k}}\hat{O}_j\)</span>
+    is an observable operator corresponding to the measured intensity at
+    <span class="math inline">\(\mathbf{k}\)</span></li>
+    <li><span class="math inline">\(\rho \equiv \ket{P}\bra{P}\)</span>
+    is the density matrix for the pure state <span
+    class="math inline">\(\ket{P}\)</span></li>
+    </ul>
+    <p>Expressed in this way, it is clear that the detection <span
+    class="math inline">\(I =
+    \operatorname{Tr}{(\mathcal{I}\rho)}\)</span> is the ensemble
+    average of <span class="math inline">\(\mathcal{I}\)</span> over the
+    probe states <span class="math inline">\(\rho\)</span>. Naturally,
+    this formulation is easily generalized to a treatment of an
+    incoherent probe, i.e. a probe with <em>mixed states</em>.</p>
+    <blockquote>
+    <p>“The goal of quantum state tomography is to solve for <span
+    class="math inline">\(\rho\)</span> the set of equations given by
+    <span class="math inline">\(I =
+    \operatorname{Tr}{(\mathcal{I}\rho)}\)</span>. Quantum state
+    tomography was initially used on photon states and is now the
+    standard method to measure qubits. It can be seen that ptychography
+    is a special form of quantum state tomography, where not only the
+    photon but also parameters of the measurement operator, i.e. the
+    object, are concurrently reconstructed.”</p>
+    <p>From Supplementary Material, <span class="citation"
+    data-cites="thibaultProbeRetrievalPtychographic2009">(<a
+    href="#ref-thibaultProbeRetrievalPtychographic2009"
+    role="doc-biblioref">3</a>)</span>.</p>
+    </blockquote>
+    <h2 id="mixed-probe-states">Mixed probe states</h2>
+    <p><span class="math display">\[\rho = \sum_{m=1}^M \lambda_m
+    \ket{P_m} \bra{P_m}\]</span></p>
+    <h1 class="unnumbered" id="bibliography">References</h1>
+    <div id="refs" class="references csl-bib-body"
+    data-entry-spacing="0" data-line-spacing="2" role="list">
+    <div id="ref-thibaultReconstructingStateMixtures2013"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">1. </div><div
+    class="csl-right-inline">Thibault, P. &amp; Menzel, A. <a
+    href="https://doi.org/10.1038/nature11806" class="external"
+    target="_blank">Reconstructing state mixtures from diffraction
+    measurements</a>. <em>Nature</em> <strong>494,</strong> 68–71
+    (2013).</div>
+    </div>
+    <div id="ref-chenMixedstateElectronPtychography2020"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">2. </div><div
+    class="csl-right-inline">Chen, Z. <em>et al.</em> <a
+    href="https://doi.org/10.1038/s41467-020-16688-6" class="external"
+    target="_blank">Mixed-state electron ptychography enables
+    sub-angstrom resolution imaging with picometer precision at low
+    dose</a>. <em>Nature Communications</em> <strong>11,</strong> 2994
+    (2020).</div>
+    </div>
+    <div id="ref-thibaultProbeRetrievalPtychographic2009"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">3. </div><div
+    class="csl-right-inline">Thibault, P., Dierolf, M., Bunk, O.,
+    Menzel, A. &amp; Pfeiffer, F. <a
+    href="https://doi.org/10.1016/j.ultramic.2008.12.011"
+    class="external" target="_blank">Probe retrieval in ptychographic
+    coherent diffractive imaging</a>. <em>Ultramicroscopy</em>
+    <strong>109,</strong> 338–343 (2009).</div>
+    </div>
+    </div>
+  </main>
+
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
+  </div>
+
+  
+</body>
+
+</html>
