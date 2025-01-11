@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="" >
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  
+  
+  
+  
+  <title>kiwi wiki – Gerchberg-Saxton Algorithm</title>
+  
+  <link rel="stylesheet" href="/kiwi-wiki/styles/css/wiki.css" />
+  
+  <script
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+type="text/javascript"></script>
+  <link rel="shortcut icon" type="image/png" href="/favicon.png">
+</head>
+
+<body>
+  
+  <h1 class="title">Gerchberg-Saxton Algorithm</h1>
+    <nav id="TOC" role="doc-toc" class="toc">
+        <ul>
+        <li><a href="#top" id="toc-top">(Top)</a></li>
+        <li><a href="#algorithm" id="toc-algorithm">Algorithm</a></li>
+        <li><a href="#convergence---gs-as-error-reduction"
+        id="toc-convergence---gs-as-error-reduction">Convergence - GS as
+        error reduction</a></li>
+        <li><a href="#bibliography"
+        id="toc-bibliography">References</a></li>
+        </ul>
+  </nav>
+    <main>
+    <h4 class="top-marker" id="top">(Top)</h4>
+    <blockquote>
+    <p>Part of a series on <a href="../atlas/phase-retrieval.html"
+    title="phase-retrieval">Phase retrieval</a></p>
+    </blockquote>
+    <p>One of the first successful algorithms for phase retrieval is the
+    <strong>Gerchberg-Saxton algorithm</strong>. GS aims to determine
+    “the complete wavefunction from intensity recordings in the image
+    &amp; diffraction planes” <span class="citation"
+    data-cites="gerchbergPracticalAlgorithmDetermination1972">(<a
+    href="#ref-gerchbergPracticalAlgorithmDetermination1972"
+    role="doc-biblioref">1</a>)</span>. The intensity recordings <span
+    class="math inline">\(|f(\mathbf{x})|^2\)</span> (for the image
+    plane) and <span class="math inline">\(|F(\mathbf{k})|^2\)</span>
+    (for the diffraction plane) act as constraints in each domain, and
+    the algorithm transforms between the two domains while repeatedly
+    applying the constraints to the guess. GS forms the basis for many
+    following phase retrieval algorithms, especially in the the scheme
+    of switching between the real and reciprocal domains.</p>
+    <p>As originally formulated, GS uses intensity recordings in both
+    planes and recovers only the phases. Because I will mainly focus on
+    microscopy, an object-plane intensity measurement is impractical.
+    Instead the object plane constraint is easily replaced with the
+    aperture, i.e. a mask of the object plane where the wavefront must
+    be zero.</p>
+    <h2 id="algorithm">Algorithm</h2>
+    <blockquote>
+    <p>Gerchberg, R. W. &amp; Saxton, W. O. A Practical Algorithm for
+    the Determination of Phase from Image and Diﬀraction Plane Pictures.
+    <em>Optik</em> <strong>35</strong>, (1972).</p>
+    <p>Fienup, J. R. Phase retrieval algorithms: a comparison. <em>Appl.
+    Opt., AO</em> <strong>21</strong>, 2758–2769 (1982).</p>
+    </blockquote>
+    <p>The essence of GS is given in the block diagram below.</p>
+    <blockquote>
+    <p><img src="assets/gerchberg-saxton-algorithm/20250111_185951.png"
+    alt="400" width="400" /></p>
+    <p><strong>Block diagram of the error-reduction (Gerchberg-Saxton)
+    algorithm.</strong></p>
+    <p>Figure from <span class="citation"
+    data-cites="fienupPhaseRetrievalAlgorithms1982">(<a
+    href="#ref-fienupPhaseRetrievalAlgorithms1982"
+    role="doc-biblioref">2</a>)</span>.</p>
+    </blockquote>
+    <ol type="1">
+    <li>Start with a guess <span
+    class="math inline">\(g_n(\mathbf{x})\)</span></li>
+    <li>Propagate to diffraction plane <span
+    class="math inline">\(G_n(\mathbf{k}) =
+    \mathcal{F}[g_n(\mathbf{x})]\)</span></li>
+    <li>Replace (denoted with prime) the amplitudes with the measured
+    ampliudes <span class="math display">\[G_n(\mathbf{k}) =
+    |G_n(\mathbf{k})|\exp(i\phi_n(\mathbf{k})) \quad\rightarrow\quad
+    G^\prime_n(\mathbf{k}) =
+    |F(\mathbf{k})|\exp(i\phi_n(\mathbf{k}))\]</span></li>
+    <li>Backpropagate <span class="math inline">\(g^\prime_n(\mathbf{x})
+    = \mathcal{F}^{-1}[ G^\prime_n(\mathcal{k}) ]\)</span></li>
+    <li>Apply the mask <span class="math inline">\(\mathbf{x} \in M :
+    \quad g^\prime_n(\mathbf{x}) \ \rightarrow \ 0\)</span></li>
+    <li>This is the ‘new’ guess object <span
+    class="math inline">\(g_{n+1}(\mathbf{x})\)</span></li>
+    </ol>
+    <h2 id="convergence---gs-as-error-reduction">Convergence - GS as
+    error reduction</h2>
+    <p>As an iterative algorithm, it is natural to think about its
+    convergence. We define the Fourier sum-squared error <span
+    class="math inline">\(E^{F}\)</span> for iteration <span
+    class="math inline">\(n\)</span> as:</p>
+    <p><span class="math display">\[
+    \begin{align}
+    E^{F}_{n} &amp;\equiv \frac{1}{N^{2}} \sum_{\mathbf{k}} \left|
+    G_{n}(\mathbf{k}) - G_{n}^{\prime}(\mathbf{k}) \right|^{2} \\
+    \\
+    &amp;= \frac{1}{N^{2}} \sum_{\mathbf{k}} \left| [
+    |G_{n}(\mathbf{k})| - |F(\mathbf{k})| ] e^{i\phi_{n}(\mathbf{k})}
+    \right|^{2} \\
+    \\
+    &amp;= \frac{1}{N^{2}} \sum_{\mathbf{k}} \left| |G_{n}(\mathbf{k})|
+    - |F(\mathbf{k})| \right|^{2}
+    \end{align}
+    \]</span></p>
+    <p>(The <span class="math inline">\(N^2\)</span> term is included by
+    the convention choice of Fourier transform)</p>
+    <p>The object sum-squared error <span
+    class="math inline">\(E^{O}\)</span> is defined similarly:</p>
+    <p><span class="math display">\[
+    \begin{align}
+    E^{O}_{n} &amp;\equiv \sum_{\mathbf{x}} \left| g_{n+1}(\mathbf{x}) -
+    g^{\prime}_{n}(\mathbf{x}) \right|^{2} \\
+    \\
+    &amp;= \sum_{\mathbf{x} \in M} \left| \cancel{g_{n+1}(\mathbf{x})} -
+    g^{\prime}_{n}(\mathbf{x}) \right|^{2} + \sum_{\mathbf{x} \not{\in}
+    M} \left| \cancel{g_{n+1}(\mathbf{x}) - g^{\prime}_{n}(\mathbf{x})}
+    \right|^{2} \\
+    \\
+    &amp;= \sum_{\mathbf{x} \in M} \left| g^{\prime}_{n}(\mathbf{x})
+    \right|^{2}
+    \end{align}
+    \]</span></p>
+    <p>In other words, <span class="math inline">\(E^F\)</span> is the
+    distance to satisfying the measured amplitudes (the reciprocal-space
+    constraint), and <span class="math inline">\(E^O\)</span> is the
+    distance to satisfying the mask <span
+    class="math inline">\(M\)</span> (the real-space constraint).</p>
+    <p>By <a href="https://en.wikipedia.org/wiki/Parseval%27s_theorem"
+    class="external" target="_blank">Parseval’s theorem</a>,</p>
+    <p><span class="math display">\[
+    \begin{align}
+    E^{F}_{n} &amp;\equiv \frac{1}{N^{2}} \sum_{\mathbf{k}} \left|
+    G_{n}(\mathbf{k}) - G_{n}^{\prime}(\mathbf{k}) \right|^{2} \\
+    \\
+    &amp;= \sum_{\mathbf{x}} \left| g_{n}(\mathbf{x}) -
+    g^{\prime}_{n}(\mathbf{x}) \right|^{2}
+    \end{align}
+    \]</span></p>
+    <p>Both <span class="math inline">\(g_{n}(\mathbf{x})\)</span> and
+    <span class="math inline">\(g_{n+1}(\mathbf{x})\)</span> satisfy the
+    object constraint. Here we take advantage of the fact that <span
+    class="math inline">\(g_{n+1}(\mathbf{x})\)</span> is
+    <em>defined</em> as the closest value to <span
+    class="math inline">\(g^\prime_n(\mathbf{x})\)</span> of those that
+    satisfy the object constraint. So, by definition,</p>
+    <p><span class="math display">\[
+    E_n^O =  \sum_{\mathbf{x}} \left| g_{n+1}(\mathbf{x}) -
+    g^{\prime}_{n}(\mathbf{x}) \right|^{2} \le  \sum_{\mathbf{x}} \left|
+    g_{n}(\mathbf{x}) - g^{\prime}_{n}(\mathbf{x}) \right|^{2} = E_n^F
+    \]</span></p>
+    <p>Similarly applying Parseval’s theorem to the object error,</p>
+    <p><span class="math display">\[
+    \begin{align}
+    E^{O}_{n} &amp;\equiv \sum_{\mathbf{x}} \left| g_{n+1}(\mathbf{x}) -
+    g^{\prime}_{n}(\mathbf{x}) \right|^{2} \\
+    \\
+    &amp;= \frac{1}{N^{2}} \sum_{\mathbf{k}} \left| G_{n+1}(\mathbf{k})
+    - G^{\prime}_{n}(\mathbf{k}) \right|^{2}
+    \end{align}
+    \]</span></p>
+    <p>Compare this to the next iteration’s Fourier error:</p>
+    <p><span class="math display">\[
+    E^{F}_{n+1} = \frac{1}{N^{2}} \sum_{\mathbf{k}} \left|
+    G_{n+1}(\mathbf{k}) - G_{n+1}^{\prime}(\mathbf{k}) \right|^{2}
+    \]</span></p>
+    <p>Again, both <span
+    class="math inline">\(G^\prime_{n}(\mathbf{k})\)</span> and <span
+    class="math inline">\(G^\prime_{n+1}(\mathbf{k})\)</span> satisfy
+    the Fourier constraint, but <span
+    class="math inline">\(G^\prime_{n+1}(\mathbf{x})\)</span> is
+    definitionally closest to <span
+    class="math inline">\(G_{n+1}(\mathbf{k})\)</span>. Therefore,</p>
+    <p><span class="math display">\[
+    E^{F}_{n+1} = \frac{1}{N^{2}} \sum_{\mathbf{k}} \left|
+    G_{n+1}(\mathbf{k}) - G_{n+1}^{\prime}(\mathbf{k}) \right|^{2} \le
+    \frac{1}{N^{2}} \sum_{\mathbf{k}} \left| G_{n+1}(\mathbf{k}) -
+    G^{\prime}_{n}(\mathbf{k}) \right|^{2} = E^O_n
+    \]</span></p>
+    <p>Combining both inequalities, we find that the error decreases
+    monotonically each iteration. This is provided as proof that the
+    algorithm must converge, but more can be said about the convergence
+    speed.</p>
+    <p><span class="math display">\[
+    E^F_{n+1} \le E^O_n \le E^F_n
+    \]</span></p>
+    <h1 class="unnumbered" id="bibliography">References</h1>
+    <div id="refs" class="references csl-bib-body"
+    data-entry-spacing="0" data-line-spacing="2" role="list">
+    <div id="ref-gerchbergPracticalAlgorithmDetermination1972"
+    class="csl-entry" role="listitem">
+    <div class="csl-left-margin">1. </div><div
+    class="csl-right-inline">Gerchberg, R. W. &amp; Saxton, W. O. A
+    <span>Practical Algorithm</span> for the <span>Determination</span>
+    of <span>Phase</span> from <span>Image</span> and <span>Diffraction
+    Plane Pictures</span>. <em>Optik</em> <strong>35,</strong>
+    (1972).</div>
+    </div>
+    <div id="ref-fienupPhaseRetrievalAlgorithms1982" class="csl-entry"
+    role="listitem">
+    <div class="csl-left-margin">2. </div><div
+    class="csl-right-inline">Fienup, J. R. <a
+    href="https://doi.org/10.1364/AO.21.002758" class="external"
+    target="_blank">Phase retrieval algorithms: A comparison</a>.
+    <em>Applied Optics</em> <strong>21,</strong> 2758–2769 (1982).</div>
+    </div>
+    </div>
+  </main>
+  <div class="kiwi-wiki-description">
+    <h2>kiwi wiki</h2>
+    <p>
+      A wiki / archive / library / blog of my interests.<br />
+      Not technically a wiki, but the name fit well with kiwi.
+    </p>
+    <span class="site-links">
+      <a href="/kiwi-wiki">index</a>
+      <a href="/">homepage</a>
+      <a href="https://github.com/c-sooyoung">github</a>
+    </span>
+  </div>
+  
+</body>
+
+</html>
