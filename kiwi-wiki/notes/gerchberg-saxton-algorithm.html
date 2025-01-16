@@ -99,9 +99,12 @@ type="text/javascript"></script>
     <h2 id="convergence---gs-as-error-reduction">Convergence - GS as
     error reduction</h2>
     <p>As an iterative algorithm, it is natural to think about its
-    convergence. We define the Fourier sum-squared error <span
-    class="math inline">\(E^{F}\)</span> for iteration <span
-    class="math inline">\(n\)</span> as:</p>
+    convergence. Mimicking Fienup’s notation <span class="citation"
+    data-cites="fienupPhaseRetrievalAlgorithms1982">(<a
+    href="#ref-fienupPhaseRetrievalAlgorithms1982"
+    role="doc-biblioref">2</a>)</span>, we define the Fourier
+    sum-squared error <span class="math inline">\(E^{F}\)</span> for
+    iteration <span class="math inline">\(n\)</span> as:</p>
     <p><span class="math display">\[
     \begin{align}
     E^{F}_{n} &amp;\equiv \frac{1}{N^{2}} \sum_{\mathbf{k}} \left|
@@ -115,10 +118,10 @@ type="text/javascript"></script>
     - |F(\mathbf{k})| \right|^{2}
     \end{align}
     \]</span></p>
-    <p>(The <span class="math inline">\(N^2\)</span> term is included by
-    the convention choice of Fourier transform)</p>
-    <p>The object sum-squared error <span
-    class="math inline">\(E^{O}\)</span> is defined similarly:</p>
+    <p>Where the <span class="math inline">\(N^2\)</span> term is
+    included by the convention choice of Fourier transform. The object
+    sum-squared error <span class="math inline">\(E^{O}\)</span> is
+    defined similarly:</p>
     <p><span class="math display">\[
     \begin{align}
     E^{O}_{n} &amp;\equiv \sum_{\mathbf{x}} \left| g_{n+1}(\mathbf{x}) -
@@ -149,8 +152,10 @@ type="text/javascript"></script>
     g^{\prime}_{n}(\mathbf{x}) \right|^{2}
     \end{align}
     \]</span></p>
-    <p>Both <span class="math inline">\(g_{n}(\mathbf{x})\)</span> and
-    <span class="math inline">\(g_{n+1}(\mathbf{x})\)</span> satisfy the
+    <p>In the expressions for <span class="math inline">\(E^F\)</span>
+    and <span class="math inline">\(E^O\)</span>, both <span
+    class="math inline">\(g_{n}(\mathbf{x})\)</span> and <span
+    class="math inline">\(g_{n+1}(\mathbf{x})\)</span> satisfy the
     object constraint. Here we take advantage of the fact that <span
     class="math inline">\(g_{n+1}(\mathbf{x})\)</span> is
     <em>defined</em> as the closest value to <span
@@ -190,9 +195,7 @@ type="text/javascript"></script>
     G^{\prime}_{n}(\mathbf{k}) \right|^{2} = E^O_n
     \]</span></p>
     <p>Combining both inequalities, we find that the error decreases
-    monotonically each iteration. This is provided as proof that the
-    algorithm must converge, but more can be said about the convergence
-    speed.</p>
+    monotonically each iteration.</p>
     <p><span class="math display">\[
     E^F_{n+1} \le E^O_n \le E^F_n
     \]</span></p>
